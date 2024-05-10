@@ -1,7 +1,16 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import { boardListContentStore } from '@/stores/boardStore'
-import { userInfoStore } from '@/stores/userStore'
+import { useUserStore } from '@/stores/userStore'
+const userStore = useUserStore()
+const { boardState } = boardListContentStore()
+const boardStore = boardListContentStore()
+boardStore.listBoard()
+const postClick = (board) => {
+  boardState.board = board
+  console.log(boardState.board)
+  console.log(board)
+}
 </script>
 
 <template>
@@ -10,11 +19,14 @@ import { userInfoStore } from '@/stores/userStore'
       <button>글쓰기</button>
     </RouterLink>
     <!-- todo: 글자수 넘어가면 말줄임표-->
-    <div class="postList">
-      <RouterLink to="/boardDetail" class="post orbit">
-        <b class="title">{{ boardListContentStore.title }}</b>
-        <p class="contents">{{ boardListContentStore.content }}</p>
-        <div class="info">{{ userInfoStore.name }} | {{ boardListContentStore.time }}</div>
+    <div class="postList" v-for="board in boardState.boardList" :key="board.boardId">
+      <RouterLink to="/boardDetail" class="post orbit" @click="postClick(board)">
+        <b class="title">{{ board.boardId }}123{{ board.title }}</b>
+        <p class="contents">{{ board.content }}</p>
+        <div class="info">
+          {{ userStore.userInfo.userName }}<br />
+          {{ board.time }}<br />
+        </div>
         <div class="info infobottom">
           <div><img class="infoIcon" src="@/assets/img/comment.png" /></div>
           <div>7</div>
@@ -24,32 +36,6 @@ import { userInfoStore } from '@/stores/userStore'
           <div>75</div>
         </div>
       </RouterLink>
-      <div class="post orbit">
-        <b class="title">{{ boardListContentStore.title }}</b>
-        <p class="contents">{{ boardListContentStore.content }}</p>
-        <div class="info">{{ userInfoStore.name }} | {{ boardListContentStore.time }}</div>
-        <div class="info infobottom">
-          <div><img class="infoIcon" src="@/assets/img/comment.png" /></div>
-          <div>7</div>
-          <div><img class="infoIcon" src="@/assets/img/like.png" /></div>
-          <div>13</div>
-          <div><img class="infoIcon" src="@/assets/img/views.png" /></div>
-          <div>75</div>
-        </div>
-      </div>
-      <div class="post orbit">
-        <b class="title">{{ boardListContentStore.title }}</b>
-        <p class="contents">{{ boardListContentStore.content }}</p>
-        <div class="info">{{ userInfoStore.name }} | {{ boardListContentStore.time }}</div>
-        <div class="info infobottom">
-          <div><img class="infoIcon" src="@/assets/img/comment.png" /></div>
-          <div>7</div>
-          <div><img class="infoIcon" src="@/assets/img/like.png" /></div>
-          <div>13</div>
-          <div><img class="infoIcon" src="@/assets/img/views.png" /></div>
-          <div>75</div>
-        </div>
-      </div>
     </div>
     <div>
       <input type="text" />

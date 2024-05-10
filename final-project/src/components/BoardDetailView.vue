@@ -1,24 +1,32 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import { ref } from 'vue'
+import { useUserStore } from '@/stores/userStore'
+import { boardListContentStore } from '@/stores/boardStore'
+// import { useUserStore } from '@/stores/userStore'
 const clickPostMenu = ref(false)
 const toggleDropdown = () => (clickPostMenu.value = !clickPostMenu.value)
+const userStore = useUserStore()
+const boardStore = boardListContentStore()
+const { boardState } = boardStore
+console.log(boardState.board)
+console.log(boardState.board.content)
 </script>
 
 <template>
   <div class="container orbit">
     <div class="detail">
       <div class="postHeader">
-        <div>제목</div>
+        <div>{{ boardState.board.title }}</div>
         <div class="postMenuIcon"><button>수정</button><button>삭제</button></div>
         <!-- <div class="postMenuIcon" @click="toggleDropdown">
           <img id="postBtn" src="@/assets/img/postmenu.png" />
         </div> -->
       </div>
       <hr />
-      <div class="postInfo">익명 | 2024년 5월 10일 금요일 오전 3시 36분</div>
+      <div class="postInfo">{{ userStore.userInfo.userName }} | {{ boardState.board.time }}</div>
       <hr />
-      <div>내용</div>
+      <div>{{ boardState.board.content }}</div>
     </div>
     <ul class="post-menu" v-show="clickPostMenu">
       <li>

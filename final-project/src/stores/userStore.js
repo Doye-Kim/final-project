@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import axios from '@/commom/axios-config'
+// import axios from '@/commom/axios-config'
 import notLoginedUserProfileImageUrl from '/src/assets/img/userCircle.png'
 
 export const useUserStore = defineStore('userStore', () => {
@@ -12,6 +12,7 @@ export const useUserStore = defineStore('userStore', () => {
     userEmail: '',
     userProfilImageUrl: notLoginedUserProfileImageUrl
   }
+
   const userInfo = ref(notLoginedUserInfo)
   const login = (loginedUserInfo) => {
     console.log(loginedUserInfo)
@@ -19,5 +20,5 @@ export const useUserStore = defineStore('userStore', () => {
   }
   const logout = () => (userInfo.value = notLoginedUserInfo)
 
-  return { userInfo, login, logout }
+  return { userInfo, login, logout, notLoginedUserInfo }
 })
