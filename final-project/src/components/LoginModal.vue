@@ -1,0 +1,108 @@
+<template>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <img src="@/assets/img/close-btn.png" class="closeBtn" />
+        <div class="logo">
+          <img src="@/assets/img/logo2.png" />
+        </div>
+      </div>
+      <form class="modal-body">
+        <div class="inputArea">
+          <input type="text" class="formInput orbit" placeholder="id " />
+        </div>
+        <div class="inputArea">
+          <input type="password" class="formInput orbit" placeholder="password" />
+        </div>
+        <div class="inputArea">
+          <div class="loginBtn orbit" onclick="clicklogin()">login</div>
+        </div>
+        <div class="text-end">
+          <RouterLink to="/users/findPW" class="orbit">비밀번호 찾기</RouterLink> |
+          <RouterLink to="/join" class="orbit">회원 가입</RouterLink>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+<style scoped>
+.modal-dialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.5);
+}
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 20px;
+}
+
+.closeBtn {
+  position: absolute;
+  width: 30px;
+  right: 2%;
+  top: 2%;
+}
+.logo {
+  text-align: center;
+}
+.logo img {
+  width: 25%;
+}
+.inputArea {
+  width: 80%;
+  margin: 0 auto;
+}
+/* todo: 크기 반응형으로 변경 */
+.formInput {
+  width: 100%;
+  aspect-ratio: 13/1;
+  margin-top: 10px;
+  border-radius: 20px;
+  text-indent: 5%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  box-shadow: none;
+  border-width: 0;
+  font-size: small;
+  background-color: rgba(217, 217, 217, 50);
+}
+.loginBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 13/1;
+  margin-top: 10px;
+  font-size: small;
+  border-radius: 20px;
+  border-width: 0;
+  background-color: #ffe6ca;
+}
+/* input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  box-shadow: none;
+  border-width: 0;
+  background-color: rgba(217, 217, 217, 50);
+} */
+.text-end {
+  margin-top: 2%;
+  text-align: center;
+  font-size: x-small;
+}
+a {
+  color: grey;
+}
+</style>
