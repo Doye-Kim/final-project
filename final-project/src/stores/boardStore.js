@@ -1,4 +1,5 @@
-import { ref, computed, reactive } from 'vue'
+import { reactive } from 'vue'
+
 import { defineStore } from 'pinia'
 
 export const boardListContentStore = defineStore('boardContentStore', () => {
@@ -31,21 +32,21 @@ export const boardListContentStore = defineStore('boardContentStore', () => {
       title: '내이름은 김도예',
       content: '내가 곧 하늘이다.',
       name: '김도예',
-      time: Date()
+      time: new Date()
     },
     {
       boardId: 2,
       title: '내이름은 칼도예',
       content: '내가 곧 검이다.',
       name: '검도예',
-      time: Date()
+      time: new Date()
     },
     {
       boardId: 3,
       title: '내이름은 궁도예',
       content: '내가 곧 활이다.',
       name: '궁도예',
-      time: Date()
+      time: new Date()
     }
   ]
 
@@ -54,7 +55,7 @@ export const boardListContentStore = defineStore('boardContentStore', () => {
     title: '내이름은 칼도예',
     content: '내가 곧 검이다.',
     name: '검도예',
-    time: Date()
+    time: new Date()
   }
   return {
     boardState,

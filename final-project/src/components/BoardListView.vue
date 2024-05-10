@@ -11,6 +11,11 @@ const postClick = (board) => {
   console.log(boardState.board)
   console.log(board)
 }
+const convertDate = (time) => {
+  let newtime = `${time.getFullYear()}-${time.getMonth() + 1 < 9 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1}-${time.getDate() < 9 ? '0' + time.getDate() : time.getDate()}`
+  console.log(newtime)
+  return newtime
+}
 </script>
 
 <template>
@@ -21,12 +26,13 @@ const postClick = (board) => {
     <!-- todo: 글자수 넘어가면 말줄임표-->
     <div class="postList" v-for="board in boardState.boardList" :key="board.boardId">
       <RouterLink to="/boardDetail" class="post orbit" @click="postClick(board)">
-        <b class="title">{{ board.boardId }}123{{ board.title }}</b>
+        <b class="title">{{ board.title }}</b>
         <p class="contents">{{ board.content }}</p>
         <div class="info">
           {{ userStore.userInfo.userName }}<br />
-          {{ board.time }}<br />
+          | {{ convertDate(board.time) }}<br />
         </div>
+
         <div class="info infobottom">
           <div><img class="infoIcon" src="@/assets/img/comment.png" /></div>
           <div>7</div>
@@ -59,7 +65,7 @@ const postClick = (board) => {
 }
 .post {
   width: 100%;
-  height: 60px;
+  height: 100px;
   position: relative;
   border-bottom: 1px solid black;
 }
@@ -86,7 +92,7 @@ const postClick = (board) => {
   margin: 5px;
 }
 .infobottom {
-  top: 30px;
+  top: 60px;
 }
 .writeBtnArea {
   width: 100%;
