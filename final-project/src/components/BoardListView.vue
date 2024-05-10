@@ -9,7 +9,7 @@ import { RouterLink } from 'vue-router'
     </RouterLink>
     <!-- todo: 글자수 넘어가면 말줄임표-->
     <div class="postList">
-      <RouterLink to="/boardWrite" class="post orbit">
+      <RouterLink to="/boardDetail" class="post orbit">
         <b class="title">제목</b>
         <p class="contents">내용입니다라마바사</p>
         <div class="info">익명 | 3분 전</div>

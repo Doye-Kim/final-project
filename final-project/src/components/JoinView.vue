@@ -1,3 +1,4 @@
+import { RouterLink } from 'vue-router';
 <template>
   <!-- todo: validate-->
   <div class="container orbit">
@@ -22,7 +23,7 @@
           <input type="email" class="formInput orbit" placeholder="이메일" />
         </div>
         <div class="inputArea">
-          <div class="loginBtn orbit" onclick="clicklogin()">회원 가입</div>
+          <RouterLink to="/" class="joinBtn orbit">회원 가입</RouterLink>
         </div>
         <div class="text-end">
           <p>
@@ -74,7 +75,7 @@
   border: 1px solid rgb(192, 192, 192);
   font-size: small;
 }
-.loginBtn {
+.joinBtn {
   display: flex;
   align-items: center;
   justify-content: center;
