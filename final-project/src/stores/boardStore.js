@@ -6,6 +6,7 @@ export const boardListContentStore = defineStore('boardContentStore', () => {
   const name = ref('')
   const content = ref('')
   const time = new Date()
+  const post = ref({})
 
   return {
     title,

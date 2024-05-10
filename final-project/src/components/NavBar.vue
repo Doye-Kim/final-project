@@ -6,7 +6,7 @@ const clickLogin = ref(false)
 const openLoginModal = () => (clickLogin.value = true)
 const clickMenu = ref(false)
 const toggleDropdown = () => (clickMenu.value = !clickMenu.value)
-const userProfileImgUrl = ref('/src/assets/img/userCircle.png')
+//const userProfileImgUrl = ref('/src/assets/img/userCircle.png')
 </script>
 
 <template>
@@ -17,13 +17,13 @@ const userProfileImgUrl = ref('/src/assets/img/userCircle.png')
     <RouterLink to="/"><img src="@/assets/img/logo2.png" width="80" /></RouterLink>
     <div class="expandItem" />
     <a id="info" class="btn d-flex nav-item col-4" href="/modify">
-      <img :src="userProfileImgUrl" class="navBtn" />
+      <!-- <img :src="userStore.userProfileImgUrl" class="navBtn" /> -->
     </a>
-    <div id="loginArea">
-      <button type="button" class="orbit" @click="openLoginModal">로그인</button>
+    <!-- <div id="logoutArea" v-if="userInfo.isLogin">
+      <RouterLink to="/" type="button" class="orbit">로그아웃</RouterLink>
     </div>
-    <!-- <div id="logoutArea">
-      <button type="button" class="orbit">로그아웃</button>
+    <div id="loginArea" v-else>
+      <button type="button" class="orbit" @click="openLoginModal">로그인</button>
     </div> -->
   </nav>
   <ul class="navbar-menu" v-show="clickMenu">

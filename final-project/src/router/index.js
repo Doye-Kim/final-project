@@ -5,6 +5,7 @@ import BoardListView from '@/components/BoardListView.vue'
 import JoinView from '@/components/JoinView.vue'
 import BoardDetailView from '@/components/BoardDetailView.vue'
 import BoardWriteView from '@/components/BoardWriteView.vue'
+import UserModifyView from '@/components/UserModifyView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -37,6 +38,11 @@ const router = createRouter({
       path: '/boardWrite',
       name: 'boardWrite',
       component: BoardWriteView
+    },
+    {
+      path: '/modify',
+      name: 'modify',
+      component: UserModifyView
     }
   ]
 })
