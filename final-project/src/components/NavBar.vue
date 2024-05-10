@@ -2,11 +2,16 @@
 import { RouterLink } from 'vue-router'
 import LoginModal from './LoginModal.vue'
 import { ref } from 'vue'
-const clickLogin = ref(false)
-const openLoginModal = () => (clickLogin.value = true)
+import { useUserStore } from '@/stores/userStore'
+const { userInfo } = useUserStore()
+
+import { useModalStore } from '@/stores/modalStore'
+const modalStore = useModalStore()
+
+const openLoginModal = () => (modalStore.isOpen = true)
 const clickMenu = ref(false)
 const toggleDropdown = () => (clickMenu.value = !clickMenu.value)
-//const userProfileImgUrl = ref('/src/assets/img/userCircle.png')
+console.log(userInfo)
 </script>
 
 <template>
@@ -16,15 +21,15 @@ const toggleDropdown = () => (clickMenu.value = !clickMenu.value)
     </div>
     <RouterLink to="/"><img src="@/assets/img/logo2.png" width="80" /></RouterLink>
     <div class="expandItem" />
-    <a id="info" class="btn d-flex nav-item col-4" href="/modify">
-      <!-- <img :src="userStore.userProfileImgUrl" class="navBtn" /> -->
+    <a id="info" href="/modify">
+      <img :src="userInfo.userProfileImageUrl" class="navBtn" />
     </a>
-    <!-- <div id="logoutArea" v-if="userInfo.isLogin">
+    <div id="logoutArea" v-if="userInfo.isLogin">
       <RouterLink to="/" type="button" class="orbit">로그아웃</RouterLink>
     </div>
     <div id="loginArea" v-else>
       <button type="button" class="orbit" @click="openLoginModal">로그인</button>
-    </div> -->
+    </div>
   </nav>
   <ul class="navbar-menu" v-show="clickMenu">
     <li>
@@ -32,7 +37,7 @@ const toggleDropdown = () => (clickMenu.value = !clickMenu.value)
     </li>
     <li><RouterLink to="/board" class="orbit" @click="toggleDropdown">커뮤니티</RouterLink></li>
   </ul>
-  <div v-if="clickLogin">
+  <div v-if="modalStore.isOpen">
     <LoginModal />
   </div>
 </template>

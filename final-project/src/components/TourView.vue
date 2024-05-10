@@ -77,10 +77,28 @@ const toggleGugunDropdown = () => (gugunDropdown.value = !gugunDropdown.value)
       </fieldset>
     </div>
   </div>
-  <KakaoMap />
+  <div id="bottomContainer">
+    <div id="friendContainer">
+      <input type="text" />
+      <button>검색</button>
+      <ul>
+        <li>친구1</li>
+        <li>친구2</li>
+        <li>친구3</li>
+      </ul>
+    </div>
+    <KakaoMap />
+  </div>
 </template>
 
 <style scoped>
+#bottomContainer {
+  display: flex;
+  flex-direction: row;
+}
+#friendContainer {
+  margin: 2%;
+}
 .dropdowns {
   display: flex;
   justify-content: center;

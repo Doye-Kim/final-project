@@ -1,4 +1,31 @@
-import { RouterLink } from 'vue-router';
+<script setup>
+import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
+import { useUserStore } from '@/stores/userStore'
+import { storeToRefs } from 'pinia'
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
+console.log(userInfo)
+const userName = ref(userInfo.userName)
+const userPassword = ref('')
+const userEmail = ref(userInfo.userEmail)
+const userCheckPassword = ref('')
+console.log(userName, userEmail)
+// todo: 사진 수정
+const update = () => {
+  let updatedUserInfo = {
+    isLogin: true,
+    userRole: userInfo.userRole,
+    userName: userName,
+    userId: userInfo.userId,
+    userPassword: userPassword,
+    userEmail: userEmail,
+    userProfileImageUrl: userInfo.userProfileImageUrl
+  }
+  sessionStorage.setItem('userInfo', JSON.stringify(updatedUserInfo))
+  userStore.login(updatedUserInfo)
+}
+</script>
 <template>
   <!-- todo: validate-->
   <div class="container orbit">
@@ -8,22 +35,32 @@ import { RouterLink } from 'vue-router';
       </div>
       <form class="modify-body">
         <div class="inputArea">
-          <input type="text" class="formInput orbit" placeholder="이름" />
+          <input type="text" class="formInput orbit" placeholder="이름" v-model="userName" />
         </div>
         <div class="inputArea">
-          <input type="text" class="formInput orbit" placeholder="아이디" disabled />
+          <input type="text" class="formInput orbit" v-model="userStore.userInfo.userId" disabled />
         </div>
         <div class="inputArea">
-          <input type="password" class="formInput orbit" placeholder="비밀번호" />
+          <input
+            type="password"
+            class="formInput orbit"
+            placeholder="비밀번호"
+            v-model="userPassword"
+          />
         </div>
         <div class="inputArea">
-          <input type="password" class="formInput orbit" placeholder="비밀번호 확인" />
+          <input
+            type="password"
+            class="formInput orbit"
+            placeholder="비밀번호 확인"
+            v-model="userCheckPassword"
+          />
         </div>
         <div class="inputArea">
-          <input type="email" class="formInput orbit" placeholder="이메일" />
+          <input type="email" class="formInput orbit" placeholder="이메일" v-model="userEmail" />
         </div>
         <div class="inputArea">
-          <RouterLink to="/" class="modifyBtn orbit">회원 가입</RouterLink>
+          <RouterLink to="/" class="modifyBtn orbit" @click="update">수정</RouterLink>
         </div>
         <div class="text-end">
           <p>

@@ -1,24 +1,67 @@
+<script setup>
+import { ref } from 'vue'
+
+const userId = ref('')
+const userPassword = ref('')
+
+import { useUserStore } from '@/stores/userStore'
+import { storeToRefs } from 'pinia'
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
+console.log(userInfo)
+import { useModalStore } from '@/stores/modalStore'
+const modalStore = useModalStore()
+
+import loginedUserProfileImageUrl from '/src/assets/img/123.jpg'
+
+const login = () => {
+  console.log(userId.value, userPassword.value)
+
+  if (userId.value == 'ssafy' && userPassword.value == '1234') {
+    let loginedUserInfo = {
+      isLogin: true,
+      userRole: 'user',
+      userName: 'ssafy',
+      userId: 'ssafy',
+      userPassword: '1234',
+      userProfileImageUrl: loginedUserProfileImageUrl
+    }
+    sessionStorage.setItem('userInfo', JSON.stringify(loginedUserInfo))
+    userStore.login(loginedUserInfo)
+    close()
+  } else alert('로그인 실패')
+}
+
+const close = () => {
+  modalStore.isOpen = false
+}
+</script>
 <template>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <img src="@/assets/img/close-btn.png" class="closeBtn" />
+        <img src="@/assets/img/close-btn.png" class="closeBtn" @click="close" />
         <div class="logo">
           <img src="@/assets/img/logo2.png" />
         </div>
       </div>
       <form class="modal-body">
         <div class="inputArea">
-          <input type="text" class="formInput orbit" placeholder="id " />
+          <input type="text" class="formInput orbit" placeholder="id " v-model="userId" />
         </div>
         <div class="inputArea">
-          <input type="password" class="formInput orbit" placeholder="password" />
+          <input
+            type="password"
+            class="formInput orbit"
+            placeholder="password"
+            v-model="userPassword"
+          />
         </div>
         <div class="inputArea">
-          <div class="loginBtn orbit" onclick="clicklogin()">login</div>
+          <div class="loginBtn orbit" @click="login">login</div>
         </div>
         <div class="text-end">
-          <RouterLink to="/users/findPW" class="orbit">비밀번호 찾기</RouterLink> |
+          <!-- <RouterLink to="/users/findPW" class="orbit">비밀번호 찾기</RouterLink> | -->
           <RouterLink to="/join" class="orbit">회원 가입</RouterLink>
         </div>
       </form>
@@ -51,6 +94,7 @@
   width: 30px;
   right: 2%;
   top: 2%;
+  cursor: pointer;
 }
 .logo {
   text-align: center;
@@ -82,6 +126,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  cursor: pointer;
   aspect-ratio: 13/1;
   margin-top: 10px;
   font-size: small;
