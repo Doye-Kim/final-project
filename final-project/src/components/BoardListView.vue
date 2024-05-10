@@ -1,5 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+import { boardListContentStore } from '@/stores/boardStore'
+import { userInfoStore } from '@/stores/userStore'
 </script>
 
 <template>
@@ -10,9 +12,9 @@ import { RouterLink } from 'vue-router'
     <!-- todo: 글자수 넘어가면 말줄임표-->
     <div class="postList">
       <RouterLink to="/boardDetail" class="post orbit">
-        <b class="title">제목</b>
-        <p class="contents">내용입니다라마바사</p>
-        <div class="info">익명 | 3분 전</div>
+        <b class="title">{{ boardListContentStore.title }}</b>
+        <p class="contents">{{ boardListContentStore.content }}</p>
+        <div class="info">{{ userInfoStore.name }} | {{ boardListContentStore.time }}</div>
         <div class="info infobottom">
           <div><img class="infoIcon" src="@/assets/img/comment.png" /></div>
           <div>7</div>
@@ -23,9 +25,9 @@ import { RouterLink } from 'vue-router'
         </div>
       </RouterLink>
       <div class="post orbit">
-        <b class="title">제목</b>
-        <p class="contents">아 하기시러아ㅓㅏㅣ어ㅏㅣㅓ아ㅣ너ㅏ</p>
-        <div class="info">익명 | 3분 전</div>
+        <b class="title">{{ boardListContentStore.title }}</b>
+        <p class="contents">{{ boardListContentStore.content }}</p>
+        <div class="info">{{ userInfoStore.name }} | {{ boardListContentStore.time }}</div>
         <div class="info infobottom">
           <div><img class="infoIcon" src="@/assets/img/comment.png" /></div>
           <div>7</div>
@@ -36,9 +38,9 @@ import { RouterLink } from 'vue-router'
         </div>
       </div>
       <div class="post orbit">
-        <b class="title">제목이 길다길길긱릭길길길길기길긱리</b>
-        <p class="contents">내용입니다라마바사</p>
-        <div class="info">익명 | 3분 전</div>
+        <b class="title">{{ boardListContentStore.title }}</b>
+        <p class="contents">{{ boardListContentStore.content }}</p>
+        <div class="info">{{ userInfoStore.name }} | {{ boardListContentStore.time }}</div>
         <div class="info infobottom">
           <div><img class="infoIcon" src="@/assets/img/comment.png" /></div>
           <div>7</div>
