@@ -25,7 +25,7 @@ import { RouterLink } from 'vue-router';
         <div class="inputArea">
           <RouterLink to="/" class="joinBtn orbit">회원 가입</RouterLink>
         </div>
-        <div class="text-end">
+        <div class="text-end inputArea">
           <p>
             해당 계정은 trip에서 제공하는 서비스를 모두 이용하실 수 있습니다. 가입 시, 서비스
             이용약관, 개인정보처리 방침에 동의하는 것으로 간주합니다.
