@@ -24,8 +24,14 @@ const convertDate = (time) => {
       <button>글쓰기</button>
     </RouterLink>
     <!-- todo: 글자수 넘어가면 말줄임표-->
-    <div class="postList" v-for="board in boardState.boardList" :key="board.boardId">
-      <RouterLink to="/boardDetail" class="post orbit" @click="postClick(board)">
+    <div class="postList">
+      <RouterLink
+        v-for="board in boardState.boardList"
+        :key="board.boardId"
+        to="/boardDetail"
+        class="post orbit"
+        @click="postClick(board)"
+      >
         <b class="title">{{ board.title }}</b>
         <p class="contents">{{ board.content }}</p>
         <div class="info">
@@ -54,14 +60,15 @@ const convertDate = (time) => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 80vh;
 }
 .postList {
   display: flex;
   flex-direction: column;
-  height: 80vh;
   align-items: center;
   width: 100%;
   max-width: 320px;
+  margin-bottom: 30px;
 }
 .post {
   width: 100%;

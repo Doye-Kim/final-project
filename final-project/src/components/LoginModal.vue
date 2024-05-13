@@ -61,8 +61,8 @@ const close = () => {
           <div class="loginBtn orbit" @click="login">login</div>
         </div>
         <div class="text-end">
-          <!-- <RouterLink to="/users/findPW" class="orbit">비밀번호 찾기</RouterLink> | -->
-          <RouterLink to="/join" class="orbit">회원 가입</RouterLink>
+          <RouterLink to="/users/findPW" class="orbit" @click="close">비밀번호 찾기</RouterLink> |
+          <RouterLink to="/join" class="orbit" @click="close">회원 가입</RouterLink>
         </div>
       </form>
     </div>
@@ -73,6 +73,7 @@ const close = () => {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 50;
   width: 100%;
   height: 100vh;
   overflow: hidden;
