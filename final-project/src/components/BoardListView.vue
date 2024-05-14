@@ -2,6 +2,7 @@
 import { RouterLink } from 'vue-router'
 import { boardListContentStore } from '@/stores/boardStore'
 import { useUserStore } from '@/stores/userStore'
+import convertDateToString from '@/utils/convert_date_to_string'
 const userStore = useUserStore()
 const { boardState } = boardListContentStore()
 const boardStore = boardListContentStore()
@@ -10,11 +11,6 @@ const postClick = (board) => {
   boardState.board = board
   console.log(boardState.board)
   console.log(board)
-}
-const convertDate = (time) => {
-  let newtime = `${time.getFullYear()}-${time.getMonth() + 1 < 9 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1}-${time.getDate() < 9 ? '0' + time.getDate() : time.getDate()}`
-  console.log(newtime)
-  return newtime
 }
 </script>
 
@@ -35,8 +31,8 @@ const convertDate = (time) => {
         <b class="title">{{ board.title }}</b>
         <p class="contents">{{ board.content }}</p>
         <div class="info">
-          {{ userStore.userInfo.userName }}<br />
-          | {{ convertDate(board.time) }}<br />
+          {{ userStore.userInfo.userName }}
+          | {{ convertDateToString(board.time) }} 전<br />
         </div>
 
         <div class="info infobottom">
