@@ -11,6 +11,10 @@ const modalStore = useModalStore()
 const openLoginModal = () => (modalStore.isOpen = true)
 const clickMenu = ref(false)
 const toggleDropdown = () => (clickMenu.value = !clickMenu.value)
+// const closeDropdown = () => {
+//   console.log('close')
+//   clickMenu.value = false
+// }
 console.log(userInfo)
 </script>
 
@@ -33,7 +37,7 @@ console.log(userInfo)
   </nav>
   <ul class="navbar-menu" v-show="clickMenu">
     <li>
-      <RouterLink to="/tour" class="orbit" @click="toggleDropdown">지역별 관광 정보</RouterLink>
+      <RouterLink to="/tour" class="orbit" @click="toggleDropdown">지도</RouterLink>
     </li>
     <li><RouterLink to="/board" class="orbit" @click="toggleDropdown">커뮤니티</RouterLink></li>
   </ul>
@@ -100,8 +104,7 @@ button {
   padding: 1%;
 }
 .navbar-menu :hover {
-  background: #dadada;
-  border-radius: 4px;
+  color: gray;
 }
 a {
   text-decoration: none;

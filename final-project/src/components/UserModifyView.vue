@@ -62,12 +62,6 @@ const update = () => {
         <div class="inputArea">
           <RouterLink to="/" class="modifyBtn orbit" @click="update">수정</RouterLink>
         </div>
-        <div class="text-end">
-          <p>
-            해당 계정은 trip에서 제공하는 서비스를 모두 이용하실 수 있습니다. 가입 시, 서비스
-            이용약관, 개인정보처리 방침에 동의하는 것으로 간주합니다.
-          </p>
-        </div>
       </form>
     </div>
   </div>
@@ -86,12 +80,7 @@ const update = () => {
   width: 100%;
   max-width: 320px;
   border-radius: 20px;
-}
-
-.postList {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  height: 75vh;
 }
 
 .inputArea {
@@ -125,12 +114,6 @@ const update = () => {
   background-color: #ffe6ca;
 }
 
-.text-end {
-  margin-top: 1%;
-  text-align: center;
-  font-size: x-small;
-  margin-bottom: 30%;
-}
 a {
   text-decoration: none;
 }
