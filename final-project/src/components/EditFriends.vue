@@ -1,3 +1,3 @@
 <template>
-  <div>edit friend</div>
+  <div>edit friends</div>
 </template>
