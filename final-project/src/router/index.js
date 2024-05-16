@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainView from '../views/MainView.vue'
-import TourView from '@/components/TourView.vue'
-import BoardListView from '@/components/BoardListView.vue'
-import JoinView from '@/components/JoinView.vue'
-import BoardDetailView from '@/components/BoardDetailView.vue'
-import BoardWriteView from '@/components/BoardWriteView.vue'
-import UserModifyView from '@/components/UserModifyView.vue'
+import TourView from '@/views/TourView.vue'
+import BoardListView from '@/views/board/BoardListView.vue'
+import JoinView from '@/views/JoinView.vue'
+import BoardDetailView from '@/views/board/BoardDetailView.vue'
+import BoardWriteView from '@/views/board/BoardWriteView.vue'
+import MyPageView from '@/views/MyPageView.vue'
+import FindPasswordView from '@/views/FindPasswordView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -40,9 +41,14 @@ const router = createRouter({
       component: BoardWriteView
     },
     {
-      path: '/modify',
-      name: 'modify',
-      component: UserModifyView
+      path: '/mypage',
+      name: 'mypage',
+      component: MyPageView
+    },
+    {
+      path: '/findPassword',
+      name: 'findPassword',
+      component: FindPasswordView
     }
   ]
 })
