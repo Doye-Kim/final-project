@@ -4,36 +4,26 @@ import { ref } from 'vue'
 const userId = ref('')
 const userPassword = ref('')
 
-import { useUserStore } from '@/stores/userStore'
+import { useAuthStore } from '@/stores/authStore'
 import { storeToRefs } from 'pinia'
-const userStore = useUserStore()
-const { userInfo } = storeToRefs(userStore)
+const authStore = useAuthStore()
+const { userInfo } = storeToRefs(authStore)
 console.log(userInfo)
 import { useModalStore } from '@/stores/modalStore'
 const modalStore = useModalStore()
-
-import loginedUserProfileImageUrl from '/src/assets/img/123.jpg'
 
 const login = () => {
   console.log(userId.value, userPassword.value)
 
   if (userId.value == 'ssafy' && userPassword.value == '1234') {
-    let loginedUserInfo = {
-      isLogin: true,
-      userRole: 'user',
-      userName: 'ssafy',
-      userId: 'ssafy',
-      userPassword: '1234',
-      userProfileImageUrl: loginedUserProfileImageUrl
-    }
-    sessionStorage.setItem('userInfo', JSON.stringify(loginedUserInfo))
-    userStore.login(loginedUserInfo)
+    sessionStorage.setItem('login', 1)
+    authStore.login('ssafy')
     close()
   } else alert('로그인 실패')
 }
 
 const close = () => {
-  modalStore.isOpen = false
+  modalStore.loginIsOpen = false
 }
 </script>
 <template>

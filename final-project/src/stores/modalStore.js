@@ -1,10 +1,13 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-// import axios from '@/commom/axios-config'
 
 export const useModalStore = defineStore('modalStore', () => {
-  const isOpen = ref(false)
+  const loginIsOpen = ref(false)
+  const PasswordIsOpen = ref(false)
+  const AddFriendIsOpen = ref(false)
   return {
-    isOpen
+    loginIsOpen,
+    PasswordIsOpen,
+    AddFriendIsOpen
   }
 })

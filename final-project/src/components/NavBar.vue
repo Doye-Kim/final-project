@@ -2,13 +2,17 @@
 import { RouterLink } from 'vue-router'
 import LoginModal from '@/components/modals/LoginModal.vue'
 import { ref } from 'vue'
-import { useUserStore } from '@/stores/userStore'
-const { userInfo } = useUserStore()
+import { useAuthStore } from '@/stores/authStore'
+const { userInfo } = useAuthStore()
 
 import { useModalStore } from '@/stores/modalStore'
+const authStore = useAuthStore()
 const modalStore = useModalStore()
 
-const openLoginModal = () => (modalStore.isOpen = true)
+const openLoginModal = () => {
+  console.log('open')
+  modalStore.loginIsOpen = true
+}
 const clickMenu = ref(false)
 const toggleDropdown = () => (clickMenu.value = !clickMenu.value)
 // const closeDropdown = () => {
@@ -25,13 +29,14 @@ console.log(userInfo)
     </div>
     <RouterLink to="/"><img src="@/assets/img/logo2.png" width="80" /></RouterLink>
     <div class="expandItem" />
-    <a id="info" href="/mypage">
-      <img :src="userInfo.userProfileImageUrl" class="navBtn" />
-    </a>
-    <div id="logoutArea" v-if="userInfo.isLogin">
-      <RouterLink to="/" type="button" class="orbit">로그아웃</RouterLink>
+
+    <div id="logoutArea" v-show="authStore.isLogin">
+      <a id="info" href="/mypage">
+        <img src="@/assets/img/userCircle.png" class="navBtn" />
+      </a>
+      <button type="button" class="orbit" @click="authStore.logout">로그아웃</button>
     </div>
-    <div id="loginArea" v-else>
+    <div id="loginArea" v-show="!authStore.isLogin">
       <button type="button" class="orbit" @click="openLoginModal">로그인</button>
     </div>
   </nav>
@@ -41,7 +46,7 @@ console.log(userInfo)
     </li>
     <li><RouterLink to="/board" class="orbit" @click="toggleDropdown">커뮤니티</RouterLink></li>
   </ul>
-  <div v-if="modalStore.isOpen">
+  <div v-if="modalStore.loginIsOpen">
     <LoginModal />
   </div>
 </template>

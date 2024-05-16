@@ -1,7 +1,8 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import axios from '@/common/axios-config'
 
-export const useUserStore = defineStore('userStore', () => {
+export const useAuthStore = defineStore('authStore', () => {
   const nowUserInfo = {
     userSeq: 1,
     password: '1234',
@@ -18,6 +19,7 @@ export const useUserStore = defineStore('userStore', () => {
   const login = (loginedUserId) => {
     console.log(loginedUserId)
     userInfo.value = nowUserInfo
+    // getUserInfo(loginedUserId)
     isLogin.value = true
   }
   const logout = () => {
@@ -25,6 +27,20 @@ export const useUserStore = defineStore('userStore', () => {
     userInfo.value = null
     isLogin.value = false
   }
+  const getUserInfo = async (userId) => {
+    // 목록
+    // get /students
+    try {
+      let response = await axios.get(`/users/${userId}`)
+      //console.log(response)
+      // let data = await response.json()
+      // console.log(data)
 
-  return { userInfo, isLogin, login, logout }
+      let { data } = response
+      userInfo.value = data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  return { userInfo, isLogin, login, logout, getUserInfo }
 })
