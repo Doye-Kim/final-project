@@ -1,9 +1,9 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import { boardListContentStore } from '@/stores/boardStore'
-import { useUserStore } from '@/stores/userStore'
+// import { useAuthStore } from '@/stores/authStore'
 import convertDateToString from '@/utils/convert_date_to_string'
-const userStore = useUserStore()
+// const authStore = useAuthStore()
 const { boardState } = boardListContentStore()
 const boardStore = boardListContentStore()
 boardStore.listBoard()
@@ -36,17 +36,17 @@ const stripTags = (str) => {
         <b class="title">{{ board.title }}</b>
         <p class="contents">{{ stripTags(board.content) }}</p>
         <div class="info">
-          {{ userStore.userInfo.userName }}
-          | {{ convertDateToString(board.time) }} 전<br />
+          <!-- {{ authStore.userInfo.userName }} -->
+          | {{ convertDateToString(board.postTime) }} 전<br />
         </div>
 
         <div class="info infobottom">
           <div><img class="infoIcon" src="@/assets/img/comment.png" /></div>
-          <div>7</div>
+          <div>{{ board.comments.length }}</div>
           <div><img class="infoIcon" src="@/assets/img/like.png" /></div>
-          <div>13</div>
+          <div>{{ board.likeCount }}</div>
           <div><img class="infoIcon" src="@/assets/img/views.png" /></div>
-          <div>75</div>
+          <div>{{ board.viewCount }}</div>
         </div>
       </RouterLink>
     </div>

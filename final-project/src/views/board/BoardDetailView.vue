@@ -1,12 +1,11 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import { ref } from 'vue'
-import { useUserStore } from '@/stores/userStore'
+// import { useAuthStore } from '@/stores/authStore'
 import { boardListContentStore } from '@/stores/boardStore'
-// import { useUserStore } from '@/stores/userStore'
 const clickPostMenu = ref(false)
 const toggleDropdown = () => (clickPostMenu.value = !clickPostMenu.value)
-const userStore = useUserStore()
+// const authStore = useAuthStore()
 const boardStore = boardListContentStore()
 const { boardState } = boardStore
 console.log(boardState.board)
@@ -24,15 +23,18 @@ console.log(boardState.board.content)
         </div> -->
       </div>
       <hr />
-      <div class="postInfo">{{ userStore.userInfo.userName }} | {{ boardState.board.time }}</div>
+      <div class="postInfo">
+        <!-- {{ authStore.userInfo.userName }}  -->
+        | {{ boardState.board.postTime }}
+      </div>
       <hr />
       <div v-html="boardState.board.content"></div>
     </div>
     <ul class="post-menu" v-show="clickPostMenu">
       <li>
-        <RouterLink to="/modify" class="orbit" @click="toggleDropdown">수정</RouterLink>
+        <RouterLink to="/boardWrite" class="orbit" @click="toggleDropdown">수정</RouterLink>
       </li>
-      <li><RouterLink to="/delete" class="orbit" @click="toggleDropdown">삭제</RouterLink></li>
+      <li><RouterLink to="/board" class="orbit" @click="toggleDropdown">삭제</RouterLink></li>
     </ul>
   </div>
 </template>
