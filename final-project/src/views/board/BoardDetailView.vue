@@ -26,7 +26,7 @@ console.log(boardState.board.content)
       <hr />
       <div class="postInfo">{{ userStore.userInfo.userName }} | {{ boardState.board.time }}</div>
       <hr />
-      <div>{{ boardState.board.content }}</div>
+      <div v-html="boardState.board.content"></div>
     </div>
     <ul class="post-menu" v-show="clickPostMenu">
       <li>

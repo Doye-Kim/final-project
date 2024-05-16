@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink } from 'vue-router'
-import LoginModal from './LoginModal.vue'
+import LoginModal from '@/components/modals/LoginModal.vue'
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 const { userInfo } = useUserStore()
@@ -25,7 +25,7 @@ console.log(userInfo)
     </div>
     <RouterLink to="/"><img src="@/assets/img/logo2.png" width="80" /></RouterLink>
     <div class="expandItem" />
-    <a id="info" href="/modify">
+    <a id="info" href="/mypage">
       <img :src="userInfo.userProfileImageUrl" class="navBtn" />
     </a>
     <div id="logoutArea" v-if="userInfo.isLogin">

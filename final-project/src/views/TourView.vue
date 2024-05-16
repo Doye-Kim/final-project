@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import KakaoMap from './KakaoMap.vue'
+import KakaoMap from '@/components/KakaoMap.vue'
 const siDropdown = ref(false)
 const gugunDropdown = ref(false)
 const toggleSiDropdown = () => (siDropdown.value = !siDropdown.value)

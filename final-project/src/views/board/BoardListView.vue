@@ -12,6 +12,11 @@ const postClick = (board) => {
   console.log(boardState.board)
   console.log(board)
 }
+const stripTags = (str) => {
+  str = str.replace(/(<([^>]+)>)/gi, '') // 태그 제거
+  str = str.replace(/\s\s+/g, ' ') // 연달아 있는 줄바꿈, 공백, 탭을 공백 1개로 줄임
+  return str
+}
 </script>
 
 <template>
@@ -29,7 +34,7 @@ const postClick = (board) => {
         @click="postClick(board)"
       >
         <b class="title">{{ board.title }}</b>
-        <p class="contents">{{ board.content }}</p>
+        <p class="contents">{{ stripTags(board.content) }}</p>
         <div class="info">
           {{ userStore.userInfo.userName }}
           | {{ convertDateToString(board.time) }} 전<br />
