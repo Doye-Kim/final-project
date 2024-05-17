@@ -1,25 +1,40 @@
 <script setup>
 import { ref } from 'vue'
-
+import axios from '@/common/axios-config'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const userId = ref('')
-const userPassword = ref('')
+const password = ref('')
 
 import { useAuthStore } from '@/stores/authStore'
 import { storeToRefs } from 'pinia'
-const authStore = useAuthStore()
-const { userInfo } = storeToRefs(authStore)
-console.log(userInfo)
+const { authStore, setLogin } = useAuthStore()
+
 import { useModalStore } from '@/stores/modalStore'
 const modalStore = useModalStore()
 
-const login = () => {
-  console.log(userId.value, userPassword.value)
+const login = async () => {
+  const loginObj = {
+    userId: userId.value,
+    password: password.value
+  }
+  try {
+    let { data } = await axios.post('/login', loginObj)
 
-  if (userId.value == 'ssafy' && userPassword.value == '1234') {
-    sessionStorage.setItem('login', 1)
-    authStore.login('ssafy')
-    close()
-  } else alert('로그인 실패')
+    if (data.result == 'success') {
+      setLogin({
+        isLogin: true,
+        userNickname: data.userNickname,
+        userSeq: data.userSeq
+      })
+      // 이동
+      close()
+    } else if (data.result == 'fail') {
+      alert('아이디 또는 비밀번호를 확인하세요.')
+    }
+  } catch (error) {
+    alert('로그인 과정에서 오류가 발생했습니다.')
+  }
 }
 
 const close = () => {
@@ -44,7 +59,7 @@ const close = () => {
             type="password"
             class="formInput orbit"
             placeholder="password"
-            v-model="userPassword"
+            v-model="password"
           />
         </div>
         <div class="inputArea">

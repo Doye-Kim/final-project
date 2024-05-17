@@ -1,4 +1,69 @@
-import { RouterLink } from 'vue-router';
+<script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
+import { ref } from 'vue'
+import axios from '@/common/axios-config'
+// const validateStore = useValidateStore()
+// const validateNickname = () => {
+//   if (validateStore.validateNickname(validateStore.nickname.value)) console.log(true)
+//   else console.log(false)
+// }
+const userId = ref('')
+const password = ref('')
+const userNickname = ref('')
+const userPhone = ref('')
+const allowSearchByPhone = ref()
+
+const register = async () => {
+  let registerObj = {
+    userId: userId.value,
+    userNickname: userNickname.value,
+    userPhone: userPhone.value,
+    password: password.value,
+    allowSearchByPhone: allowSearchByPhone.value ? 1 : 0
+  }
+  try {
+    let { data } = await axios.post('/users', registerObj)
+    console.log(data)
+    alert('회원 가입을 축하합니다. 로그인을 진행해 주세요.')
+    router.push('/')
+  } catch (error) {
+    alert('가입에 오류가 발생했습니다.')
+  }
+}
+// const phone = ref('')
+const getPhoneMask = (data) => {
+  let res = getMask(data)
+  // phone.value = res
+  userPhone.value = res
+  console.log(userPhone.value)
+}
+
+const getMask = (phoneNumber) => {
+  if (!phoneNumber) return phoneNumber
+  phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
+
+  let res = ''
+  if (phoneNumber.length < 3) {
+    res = phoneNumber
+  } else {
+    if (phoneNumber.length < 8) {
+      res = phoneNumber
+    } else if (phoneNumber.length == 8) {
+      res = phoneNumber.substr(0, 4) + '-' + phoneNumber.substr(4)
+    } else if (phoneNumber.length == 9) {
+      res = phoneNumber.substr(0, 3) + '-' + phoneNumber.substr(3, 3) + '-' + phoneNumber.substr(6)
+    } else if (phoneNumber.length == 10) {
+      res = phoneNumber.substr(0, 3) + '-' + phoneNumber.substr(3, 3) + '-' + phoneNumber.substr(6)
+    } else if (phoneNumber.length > 10) {
+      //010-1234-5678
+      res = phoneNumber.substr(0, 3) + '-' + phoneNumber.substr(3, 4) + '-' + phoneNumber.substr(7)
+    }
+  }
+  return res
+}
+</script>
+
 <template>
   <!-- todo: validate-->
   <div class="container orbit">
@@ -8,22 +73,42 @@ import { RouterLink } from 'vue-router';
       </div>
       <form class="join-body">
         <div class="inputArea">
-          <input type="text" class="formInput orbit" placeholder="이름" />
+          <input type="text" class="formInput orbit" v-model="userNickname" placeholder="닉네임" />
         </div>
         <div class="inputArea">
-          <input type="text" class="formInput orbit" placeholder="아이디" />
+          <input type="text" class="formInput orbit" v-model="userId" placeholder="아이디" />
         </div>
         <div class="inputArea">
           <input type="password" class="formInput orbit" placeholder="비밀번호" />
         </div>
         <div class="inputArea">
-          <input type="password" class="formInput orbit" placeholder="비밀번호 확인" />
+          <input
+            type="password"
+            class="formInput orbit"
+            v-model="password"
+            placeholder="비밀번호 확인"
+          />
         </div>
         <div class="inputArea">
-          <input type="email" class="formInput orbit" placeholder="이메일" />
+          <input
+            type="text"
+            class="formInput orbit"
+            v-model="userPhone"
+            @keyup="getPhoneMask(userPhone)"
+            placeholder="휴대폰 번호 입력"
+          />
         </div>
         <div class="inputArea">
-          <RouterLink to="/" class="joinBtn orbit">회원 가입</RouterLink>
+          <div class="formInput toggleArea orbit">
+            <span>번호로 친구 추가 허용</span>
+            <input type="checkbox" id="toggle" hidden v-model="allowSearchByPhone" />
+            <label for="toggle" class="toggleSwitch">
+              <span class="toggleButton"></span>
+            </label>
+          </div>
+        </div>
+        <div class="inputArea">
+          <button class="joinBtn orbit" @click.prevent="register">회원 가입</button>
         </div>
         <div class="text-end inputArea">
           <p>
@@ -41,6 +126,51 @@ import { RouterLink } from 'vue-router';
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.toggleArea {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.formInput span {
+  width: 80%;
+}
+.toggleSwitch {
+  width: 30px;
+  height: 15px;
+  display: block;
+  position: relative;
+  border-radius: 30px;
+  background-color: #fff;
+  box-shadow: 0 0 2px 1px rgba(0 0 0 / 15%);
+  cursor: pointer;
+  margin: 5px;
+}
+
+.toggleSwitch .toggleButton {
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  top: 50%;
+  left: 1px;
+  transform: translateY(-50%);
+
+  border-radius: 50%;
+  background: #ffdd9e;
+}
+
+#toggle:checked ~ .toggleSwitch {
+  background: #ffdd9e;
+}
+
+#toggle:checked ~ .toggleSwitch .toggleButton {
+  left: calc(100% - 13px);
+  background: #fff;
+}
+
+.toggleSwitch,
+.toggleButton {
+  transition: all 0.2s ease-in;
 }
 .join-header {
   text-align: center;

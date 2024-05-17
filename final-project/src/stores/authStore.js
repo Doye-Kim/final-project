@@ -1,46 +1,53 @@
-import { ref } from 'vue'
+import { reactive } from 'vue'
 import { defineStore } from 'pinia'
 import axios from '@/common/axios-config'
 
 export const useAuthStore = defineStore('authStore', () => {
-  const nowUserInfo = {
-    userSeq: 1,
-    password: '1234',
-    userId: 'ssafy',
-    userNickname: '싸피',
-    role: 'admin',
-    isQuit: 0,
-    userPhone: '010-1111-1111'
-  }
+  //const isLogin = ref(sessionStorage.getItem('login') != null ? true : false)
 
-  const userInfo = ref()
-  const isLogin = ref(sessionStorage.getItem('login') != null ? true : false)
-  console.log(userInfo)
-  const login = (loginedUserId) => {
-    console.log(loginedUserId)
-    userInfo.value = nowUserInfo
-    // getUserInfo(loginedUserId)
-    isLogin.value = true
+  const authStore = reactive({
+    // NavBar
+    isLogin: sessionStorage.getItem('isLogin') != null ? true : false,
+
+    // else
+    userNickname: '',
+    userSeq: 0,
+
+    // Login
+    userId: '',
+    userPassword: ''
+  })
+  const setLogin = (payload) => {
+    sessionStorage.setItem('isLogin', 'true')
+    sessionStorage.setItem('userNickname', payload.userNickname)
+    sessionStorage.setItem('userSeq', payload.userSeq)
+
+    authStore.isLogin = payload.isLogin
+    authStore.userName = payload.userName
+    authStore.userProfileImageUrl = payload.userProfileImageUrl
+    console.log(authStore)
   }
-  const logout = () => {
-    sessionStorage.clear()
-    userInfo.value = null
-    isLogin.value = false
+  const setLogout = () => {
+    sessionStorage.removeItem('isLogin')
+    sessionStorage.removeItem('userNickname')
+    sessionStorage.removeItem('userSeq')
+
+    authStore.isLogin = false
+    authStore.userNickname = ''
+    authStore.userSeq = 0
   }
-  const getUserInfo = async (userId) => {
-    // 목록
-    // get /students
+  const logout = async () => {
+    console.log('logout')
     try {
-      let response = await axios.get(`/users/${userId}`)
-      //console.log(response)
-      // let data = await response.json()
-      // console.log(data)
+      let { data } = await axios.get('/logout')
 
-      let { data } = response
-      userInfo.value = data
+      if (data.result == 'success') {
+        setLogout()
+      }
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
-  return { userInfo, isLogin, login, logout, getUserInfo }
+
+  return { authStore, setLogin, logout }
 })

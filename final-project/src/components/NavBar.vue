@@ -1,12 +1,20 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 import LoginModal from '@/components/modals/LoginModal.vue'
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 const { userInfo } = useAuthStore()
 
 import { useModalStore } from '@/stores/modalStore'
-const authStore = useAuthStore()
+const { authStore, logout } = useAuthStore()
+
+const navLogout = () => {
+  console.log('logout')
+  logout()
+  router.push('/')
+}
 const modalStore = useModalStore()
 
 const openLoginModal = () => {
@@ -34,7 +42,7 @@ console.log(userInfo)
       <a id="info" href="/mypage">
         <img src="@/assets/img/userCircle.png" class="navBtn" />
       </a>
-      <button type="button" class="orbit" @click="authStore.logout">로그아웃</button>
+      <button type="button" class="orbit" @click="navLogout">로그아웃</button>
     </div>
     <div id="loginArea" v-show="!authStore.isLogin">
       <button type="button" class="orbit" @click="openLoginModal">로그인</button>
