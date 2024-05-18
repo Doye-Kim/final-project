@@ -3,7 +3,7 @@
     <hr />
     <footer>
       <div class="inner">
-        <div class="footer-message">모든 분들의 안전하고 행복한 여행을 바랍니다. :)</div>
+        <div class="footer-message orbit">모든 분들의 안전하고 행복한 여행을 바랍니다. :)</div>
         <a href="mailto:kmdy125@gmail.com"><img class="logo" src="@/assets/img/gmail.svg" /></a>
         <a href="https://github.com/Doye-Kim"><img class="logo" src="@/assets/img/github.svg" /></a>
         <div class="footer-copyright">Copyright 2024 All ⓒ rights reserved</div>
@@ -23,13 +23,13 @@ footer {
   font-weight: bold;
   font-size: 0.9rem;
   color: #545e6f;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
   margin: 0 0 0 0.6rem;
 }
 .footer-contact {
   font-size: 0.9rem;
   color: #545e6f;
-  margin: 0.6rem;
+  margin: 1rem;
 }
 .footer-copyright {
   font-size: 0.9rem;

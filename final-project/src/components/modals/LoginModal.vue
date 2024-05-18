@@ -1,13 +1,10 @@
 <script setup>
 import { ref } from 'vue'
 import axios from '@/common/axios-config'
-import { useRouter } from 'vue-router'
-const router = useRouter()
 const userId = ref('')
 const password = ref('')
-
 import { useAuthStore } from '@/stores/authStore'
-const { authStore, setLogin } = useAuthStore()
+const { setLogin } = useAuthStore()
 
 import { useModalStore } from '@/stores/modalStore'
 const modalStore = useModalStore()
@@ -49,7 +46,7 @@ const close = () => {
           <img src="@/assets/img/logo2.png" />
         </div>
       </div>
-      <form class="modal-body">
+      <form class="modal-body" novalidate>
         <div class="inputArea">
           <input type="text" class="formInput orbit" placeholder="id " v-model="userId" />
         </div>
