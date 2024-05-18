@@ -1,12 +1,34 @@
+<script setup>
+import getMask from '@/utils/phonenumber_to_string'
+import { useUserStore } from '@/stores/userStore'
+const { userInfo, updateUserInfo } = useUserStore()
+import { ref } from 'vue'
+const userNickname = ref(userInfo.userNickname)
+const userPhone = ref(userInfo.userPhone)
+const allowSearchByPhone = ref(userInfo.allowSearchByPhone)
+const getPhoneMask = (data) => {
+  let res = getMask(data)
+  userPhone.value = res
+}
+
+const updateUser = () => {
+  userInfo.userNickname = userNickname.value
+  userInfo.userPhone = userPhone.value
+  userInfo.allowSearchByPhone = allowSearchByPhone.value
+  updateUserInfo()
+}
+</script>
 <template>
   <div class="orbit container">
     <div class="box nickname">
       <div class="title">닉네임</div>
-      <div class="form"><input type="text" /></div>
+      <div class="form"><input type="text" v-model="userNickname" class="orbit" /></div>
     </div>
     <div class="box phone">
       <div class="title">휴대폰 번호</div>
-      <div class="form"><input /></div>
+      <div class="form">
+        <input type="text" v-model="userPhone" class="orbit" @keyup="getPhoneMask(userPhone)" />
+      </div>
     </div>
     <div class="box allowphone">
       <div class="toggleArea">
@@ -17,11 +39,15 @@
         </label>
       </div>
     </div>
-    <div id="saveBtn">변경 사항 저장하기</div>
+    <div id="saveBtn" @click="updateUser">변경 사항 저장하기</div>
   </div>
 </template>
 
 <style scoped>
+input:focus {
+  outline: 1px solid #ffa967;
+  border: none;
+}
 .box {
   width: 50%;
   height: auto;

@@ -8,6 +8,9 @@ const isSelected = ref(1)
 const changeValue = (value) => {
   isSelected.value = value
 }
+import { useUserStore } from '@/stores/userStore'
+const { getUserInfo } = useUserStore()
+getUserInfo()
 </script>
 <template>
   <div class="container">
@@ -39,7 +42,7 @@ const changeValue = (value) => {
       <MyPlace v-show="isSelected === 1" />
       <MyPlan v-show="isSelected === 2" />
       <MyActivity v-show="isSelected === 3 || isSelected === 4" />
-      <AccountInformation v-show="isSelected === 5" />
+      <AccountInformation v-if="isSelected === 5" />
     </div>
   </div>
 </template>

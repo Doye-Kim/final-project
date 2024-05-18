@@ -108,6 +108,10 @@ const close = () => {
   width: 80%;
   margin: 0 auto;
 }
+input:focus {
+  outline: 1px solid #ffa967;
+  border: none;
+}
 /* todo: 크기 반응형으로 변경 */
 .formInput {
   width: 100%;

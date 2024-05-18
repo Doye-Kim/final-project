@@ -57,6 +57,10 @@ const stripTags = (str) => {
   </div>
 </template>
 <style scoped>
+input:focus {
+  outline: 1px solid #ffa967;
+  border: none;
+}
 #container {
   display: flex;
   flex-direction: column;

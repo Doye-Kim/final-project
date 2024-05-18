@@ -48,4 +48,8 @@
   border: 1px solid rgb(192, 192, 192);
   font-size: small;
 }
+input:focus {
+  outline: 1px solid #ffa967;
+  border: none;
+}
 </style>
