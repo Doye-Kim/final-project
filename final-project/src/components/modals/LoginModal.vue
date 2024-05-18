@@ -7,7 +7,6 @@ const userId = ref('')
 const password = ref('')
 
 import { useAuthStore } from '@/stores/authStore'
-import { storeToRefs } from 'pinia'
 const { authStore, setLogin } = useAuthStore()
 
 import { useModalStore } from '@/stores/modalStore'
