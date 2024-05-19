@@ -1,52 +1,115 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+// import { RouterLink } from 'vue-router'
 import { ref } from 'vue'
-// import { useAuthStore } from '@/stores/authStore'
-import { boardListContentStore } from '@/stores/boardStore'
-const clickPostMenu = ref(false)
-const toggleDropdown = () => (clickPostMenu.value = !clickPostMenu.value)
-// const authStore = useAuthStore()
-const boardStore = boardListContentStore()
-const { boardState } = boardStore
+import { useUserStore } from '@/stores/userStore'
+import { useBoardStore } from '@/stores/boardStore'
+// const clickPostMenu = ref(false)
+// const toggleDropdown = () => (clickPostMenu.value = !clickPostMenu.value)
+const { getUserNickname } = useUserStore()
+const boardStore = useBoardStore()
+const { boardState, commentState } = boardStore
+import moment from 'moment'
+
+const getPostNickname = async () => {
+  boardState.nickname = await getUserNickname(boardState.board.userSeq)
+}
+const getCommentNicknameList = async () => {
+  boardState.commentNnList.length = 0
+  for (let i in boardState.board.comments) {
+    boardState.commentNnList.push(await getUserNickname(boardState.board.comments[i].userSeq))
+  }
+
+  console.log(boardState.commentNnList)
+}
+
+getPostNickname()
+getCommentNicknameList()
+
+const comment = ref('')
+
+const insertComment = () => {
+  commentState.comment.commentContent = comment.value
+  boardStore.writeComment()
+}
+const timeToString = (time) => {
+  let data = moment(time).format('yyyy.M.DD HH:mm')
+  return data
+}
 console.log(boardState.board)
-console.log(boardState.board.content)
+
+const isSame = sessionStorage.getItem('userSeq') == boardState.board.userSeq
+const isSameComment = []
+for (let i in boardState.board.comments) {
+  isSameComment.push(sessionStorage.getItem('userSeq') == boardState.board.comments[i].userSeq)
+}
+console.log(isSameComment)
+console.log(sessionStorage.getItem('userSeq') == boardState.board.userSeq)
 </script>
 
 <template>
-  <div class="container orbit">
-    <div class="detail">
+  <div class="boardContainer orbit">
+    <div class="boardDetail">
       <div class="postHeader">
-        <div>{{ boardState.board.title }}</div>
-        <div class="postMenuIcon"><button>수정</button><button>삭제</button></div>
+        <div>{{ boardState.board.postTitle }}</div>
+        <div class="postMenuIcon" v-if="isSame">
+          <RouterLink to="/boardUpdate">수정</RouterLink><button @click="deletePost">삭제</button>
+        </div>
         <!-- <div class="postMenuIcon" @click="toggleDropdown">
           <img id="postBtn" src="@/assets/img/postmenu.png" />
         </div> -->
       </div>
       <hr />
       <div class="postInfo">
-        <!-- {{ authStore.userInfo.userName }}  -->
-        | {{ boardState.board.postTime }}
+        {{ boardState.nickname }}
+        | {{ timeToString(boardState.board.postTime) }}
       </div>
       <hr />
-      <div v-html="boardState.board.content"></div>
+      <div class="postContent" v-html="boardState.board.postContent"></div>
+      <div class="postComment">
+        <div class="comment-write">
+          <input class="orbit" type="text" v-model="comment" placeholder="댓글을 입력해주세요" />
+          <button class="orbit" @click="insertComment(comment)">입력</button>
+        </div>
+        <div class="comment-list">
+          <div v-for="(item, index) in boardState.board.comments" :key="index">
+            <div class="comment-bottom">
+              <img src="@/assets/img/userCircle.png" style="width: 20px; margin-right: 5pxs" /><span
+                class="comment-nickname"
+                >{{ boardState.commentNnList[index] }}</span
+              >
+              <span
+                class="comment-delete"
+                @click="boardStore.deleteComment(item.commentSeq)"
+                v-if="isSameComment[index]"
+                >삭제</span
+              >
+            </div>
+            <div class="comment-content">{{ item.commentContent }}</div>
+            <div class="comment-time">
+              {{ timeToString(item.commentTime) }}
+            </div>
+            <hr />
+          </div>
+        </div>
+      </div>
     </div>
-    <ul class="post-menu" v-show="clickPostMenu">
+    <!-- <ul class="post-menu">
       <li>
         <RouterLink to="/boardWrite" class="orbit" @click="toggleDropdown">수정</RouterLink>
       </li>
       <li><RouterLink to="/board" class="orbit" @click="toggleDropdown">삭제</RouterLink></li>
-    </ul>
+    </ul> -->
   </div>
 </template>
-<style scoped>
-.container {
+<style>
+.boardContainer {
   position: relative;
   display: flex;
   flex-direction: column;
   height: 80vh;
   align-items: center;
 }
-.detail {
+.boardDetail {
   width: 100%;
   max-width: 320px;
 }
@@ -90,8 +153,77 @@ console.log(boardState.board.content)
   background: #dadada;
   border-radius: 4px;
 }
-a {
-  text-decoration: none;
-  color: black;
+
+.comment-write input {
+  width: 100%;
+  padding: 10px 0 10px 0;
+  margin-top: 10px;
+  border-radius: 10px;
+  text-indent: 5%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  box-shadow: none;
+  border: 1px solid rgb(192, 192, 192);
+  font-size: small;
+}
+input:focus {
+  outline: 1px solid #ffa967;
+  border: none;
+}
+.comment-write button {
+  float: right;
+  width: 20%;
+  padding: 5px;
+  margin-top: 10px;
+  font-size: small;
+  border-radius: 10px;
+  border-width: 0;
+  background-color: #ffe6ca;
+}
+.comment-list {
+  margin-top: 50px;
+  max-height: 40vh;
+  overflow-y: scroll;
+}
+
+.comment-bottom {
+  font-size: small;
+  display: flex;
+  align-items: center;
+}
+.comment-nickname {
+  font-size: small;
+  font-weight: bold;
+}
+.comment-delete {
+  margin-left: auto;
+  font-size: x-small;
+}
+.comment-delete:hover {
+  color: gray;
+  cursor: pointer;
+}
+.comment-content {
+  font-size: small;
+}
+.comment-time {
+  font-size: x-small;
+  color: gray;
+}
+blockquote {
+  margin: 0;
+}
+
+blockquote p {
+  padding: 15px;
+  background: #eee;
+  border-radius: 5px;
+}
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
 }
 </style>

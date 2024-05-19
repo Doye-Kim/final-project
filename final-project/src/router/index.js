@@ -7,6 +7,8 @@ import BoardDetailView from '@/views/board/BoardDetailView.vue'
 import BoardWriteView from '@/views/board/BoardWriteView.vue'
 import MyPageView from '@/views/MyPageView.vue'
 import FindPasswordView from '@/views/FindPasswordView.vue'
+import BoardUpdateView from '@/views/board/BoardUpdate.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -39,6 +41,11 @@ const router = createRouter({
       path: '/boardWrite',
       name: 'boardWrite',
       component: BoardWriteView
+    },
+    {
+      path: '/boardUpdate',
+      name: 'boardUpdate',
+      component: BoardUpdateView
     },
     {
       path: '/mypage',

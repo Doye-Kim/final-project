@@ -23,8 +23,8 @@ const toolbars = [
   'save'
 ]
 
-const content = ref('')
-const title = ref('')
+const content = ref(boardState.value.board.postContent)
+const title = ref(boardState.value.board.postTitle)
 
 const onSave = (v, h) => {
   console.log(v)

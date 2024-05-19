@@ -12,6 +12,11 @@ export const useUserStore = defineStore('userStore', () => {
     allowSearchByPhone: '',
     isQuit: 0
   })
+  const getUserNickname = async (userSeq) => {
+    let { data } = await axios.get(`/users/${userSeq}`)
+    console.log(data.userNickname)
+    return data.userNickname
+  }
   const getUserInfo = async () => {
     let userSeq = sessionStorage.getItem('userSeq')
     let { data } = await axios.get(`/users/${userSeq}`)
@@ -43,5 +48,5 @@ export const useUserStore = defineStore('userStore', () => {
     console.log(data)
     return data
   }
-  return { userInfo, getUserInfo, updateUserInfo, updateUserPassword }
+  return { userInfo, getUserNickname, getUserInfo, updateUserInfo, updateUserPassword }
 })

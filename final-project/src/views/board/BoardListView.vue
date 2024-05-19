@@ -1,11 +1,11 @@
 <script setup>
 import { RouterLink } from 'vue-router'
-import { boardListContentStore } from '@/stores/boardStore'
+import { useBoardStore } from '@/stores/boardStore'
 // import { useAuthStore } from '@/stores/authStore'
 import convertDateToString from '@/utils/convert_date_to_string'
 // const authStore = useAuthStore()
-const { boardState } = boardListContentStore()
-const boardStore = boardListContentStore()
+const { boardState } = useBoardStore()
+const boardStore = useBoardStore()
 boardStore.listBoard()
 const postClick = (board) => {
   boardState.board = board
@@ -28,13 +28,13 @@ const stripTags = (str) => {
     <div class="postList">
       <RouterLink
         v-for="board in boardState.boardList"
-        :key="board.boardId"
+        :key="board.postSeq"
         to="/boardDetail"
         class="post orbit"
         @click="postClick(board)"
       >
-        <b class="title">{{ board.title }}</b>
-        <p class="contents">{{ stripTags(board.content) }}</p>
+        <b class="title">{{ board.postTitle }}</b>
+        <p class="contents">{{ stripTags(board.postContent) }}</p>
         <div class="info">
           <!-- {{ authStore.userInfo.userName }} -->
           | {{ convertDateToString(board.postTime) }} 전<br />
