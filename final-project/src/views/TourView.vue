@@ -1,31 +1,59 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+import axios from '@/common/axios-config'
 import KakaoMap from '@/components/KakaoMap.vue'
+import { useAttractionStore } from '@/stores/attractionStore'
+const { attractionState, getMarkers } = useAttractionStore()
 const siDropdown = ref(false)
 const gugunDropdown = ref(false)
 const toggleSiDropdown = () => (siDropdown.value = !siDropdown.value)
 const toggleGugunDropdown = () => (gugunDropdown.value = !gugunDropdown.value)
 
-const regionList = [
-  { value: '1', name: '서울' },
-  { value: '2', name: '인천' },
-  { value: '3', name: '대전' },
-  { value: '4', name: '대구' },
-  { value: '5', name: '광주' },
-  { value: '6', name: '부산' },
-  { value: '7', name: '울산' },
-  { value: '8', name: '세종특별자치시' },
-  { value: '31', name: '경기도' },
-  { value: '32', name: '강원특별자치도' },
-  { value: '33', name: '충청북도' },
-  { value: '34', name: '충청남도' },
-  { value: '35', name: '경상북도' },
-  { value: '36', name: '경상남도' },
-  { value: '37', name: '전북특별자치도' },
-  { value: '38', name: '전라남도' },
-  { value: '39', name: '제주도' }
-]
+const regionList = ref([])
+const sido = ref({
+  code: 0,
+  name: '지역'
+})
+const gugun = ref({
+  code: 0,
+  name: '구/군'
+})
+const sidoListUpdate = async () => {
+  let { data } = await axios.get('/attraction/sido')
+  for (let i in data) {
+    regionList.value.push({ value: data[i].sidoCode, name: data[i].sidoName })
+  }
+}
+sidoListUpdate()
 
+const gugunList = ref([
+  {
+    value: 0,
+    name: '지역을 먼저 선택해 주세요'
+  }
+])
+const gugunListUpdate = async (sidoCode) => {
+  gugunList.value.length = 0
+  let { data } = await axios.get(`/attraction/gugun/${sidoCode}`)
+  for (let i in data) {
+    gugunList.value.push({ value: data[i].gugunCode, name: data[i].gugunName })
+  }
+}
+
+const selectSido = (sidoCode, sidoName) => {
+  sido.value.name = sidoName
+  sido.value.code = sidoCode
+  attractionState.sidoCode = sidoCode
+  gugunListUpdate(sidoCode)
+  toggleSiDropdown()
+}
+
+const selectGugun = (code, name) => {
+  gugun.value.name = name
+  gugun.value.code = code
+  attractionState.gugunCode = code
+  toggleGugunDropdown()
+}
 const checkList = [
   { value: 12, title: '관광지' },
   { value: 32, title: '숙박' },
@@ -36,11 +64,18 @@ const checkList = [
   { value: 38, title: '쇼핑' }
 ]
 const selectList = ref([])
+
+watch(selectList, (newList) => {
+  attractionState.list = newList
+  getMarkers()
+})
+console.log(selectList)
 const allSelected = computed({
   get() {
     return checkList.length === selectList.value.length
   },
   set(e) {
+    console.log('set', e)
     selectList.value = e ? [12, 32, 39, 14, 15, 25, 38] : []
   }
 })
@@ -51,20 +86,26 @@ const allSelected = computed({
     <div class="tourHeader">
       <div class="dropdowns">
         <div class="dropdown orbit">
-          <button id="siBtn" @click="toggleSiDropdown" class="orbit dropdownBtn">지역</button>
+          <button id="siBtn" @click="toggleSiDropdown" class="orbit dropdownBtn">
+            {{ sido.name }}
+          </button>
           <ul id="si" class="dropdown-menu" v-show="siDropdown">
             <li v-for="(item, index) in regionList" :key="index" class="dropdown-item">
-              <div :value="item.value">{{ item.name }}</div>
+              <div :value="item.value" @click="selectSido(item.value, item.name)">
+                {{ item.name }}
+              </div>
             </li>
           </ul>
         </div>
         <div class="dropdown">
           <button id="gugunBtn" class="dropdownBtn orbit" @click="toggleGugunDropdown">
-            구/군
+            {{ gugun.name }}
           </button>
           <ul id="gugun" class="dropdown-menu" v-show="gugunDropdown">
-            <li class="dropdown-item disabled">
-              <div>지역을 먼저 선택해 주세요</div>
+            <li v-for="(item, index) in gugunList" :key="index" class="dropdown-item">
+              <div :value="item.value" @click="selectGugun(item.value, item.name)">
+                {{ item.name }}
+              </div>
             </li>
           </ul>
         </div>
@@ -73,7 +114,13 @@ const allSelected = computed({
         <input type="checkbox" value="100" v-model="allSelected" />
         <label for="100">전체</label>
         <span v-for="(item, index) in checkList" :key="index">
-          <input type="checkbox" :value="item.value" name="contents" v-model="selectList" />
+          <input
+            type="checkbox"
+            :value="item.value"
+            name="contents"
+            v-model="selectList"
+            @click="clickContent"
+          />
           <label :for="item.value">{{ item.title }}</label>
         </span>
       </fieldset>
