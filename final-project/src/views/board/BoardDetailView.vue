@@ -69,6 +69,12 @@ console.log(sessionStorage.getItem('userSeq') == boardState.board.userSeq)
       <div class="postInfo">
         {{ boardState.nickname }}
         | {{ timeToString(boardState.board.postTime) }}
+        <span class="likeviewInfo"
+          ><img src="@/assets/img/like.png" width="15px" />
+          <span>{{ boardState.board.likeCount }}</span>
+          <img src="@/assets/img/views.png" width="15px" />
+          <span>{{ boardState.board.likeCount }}</span>
+        </span>
       </div>
       <hr />
       <div class="postContent" v-html="boardState.board.postContent"></div>
@@ -130,6 +136,18 @@ console.log(sessionStorage.getItem('userSeq') == boardState.board.userSeq)
 }
 .postInfo {
   font-size: x-small;
+  position: relative;
+}
+.likeviewInfo {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+}
+.likeviewInfo span {
+  font-size: small;
+  padding: 0 10px 0 10px;
 }
 #postBtn {
   width: 20px;
@@ -164,7 +182,7 @@ console.log(sessionStorage.getItem('userSeq') == boardState.board.userSeq)
 .comment-write input {
   width: 100%;
   padding: 10px 0 10px 0;
-  margin-top: 10px;
+  margin-top: 50px;
   border-radius: 10px;
   text-indent: 5%;
   -webkit-appearance: none;
@@ -188,12 +206,17 @@ input:focus {
   border-width: 0;
   background-color: #ffe6ca;
 }
+
 .comment-list {
   margin-top: 50px;
-  max-height: 40vh;
+  height: 40vh;
   overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-
+.comment-list::-webkit-scrollbar {
+  display: none;
+}
 .comment-bottom {
   font-size: small;
   display: flex;
