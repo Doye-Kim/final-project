@@ -37,7 +37,7 @@ const onSave = (v, h) => {
 
       boardState.value.board.postTitle = title.value
       boardState.value.board.postContent = content.value
-      boardStore.writePost()
+      boardStore.updatePost()
       router.push('/board')
     })
   }

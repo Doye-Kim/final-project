@@ -36,40 +36,42 @@ export const useBoardStore = defineStore(
     })
 
     const listBoard = async () => {
-      boardState.boardList = boardListData
-      // try {
-      //   let response = await axios.get('/posts')
-      //   //console.log(response)
-      //   // let data = await response.json()
-      //   // console.log(data)
+      //boardState.boardList = boardListData
+      try {
+        let response = await axios.get('/posts')
+        //console.log(response)
+        // let data = await response.json()
+        // console.log(data)
 
-      //   let { data } = response
-      //   boardState.boardList = data
-      // } catch (error) {
-      //   console.log(error)
-      // }
+        let { data } = response
+        boardState.boardList = data
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
     }
     const detailBoard = async (postSeq) => {
       // 상세
       console.log(postSeq)
-      // let url = '/posts/' + postSeq
+      let url = '/posts/' + postSeq
 
-      // try {
-      //   let { data } = await axios.get(url)
-      //   // let { data } = response;
-      //   boardState.board = data
-      // } catch (error) {
-      //   console.log(error)
-      // }
+      try {
+        let { data } = await axios.get(url)
+        // let { data } = response;
+        boardState.board = data
+      } catch (error) {
+        console.log(error)
+      }
     }
     const writePost = async () => {
       try {
         const postObj = {
           title: boardState.board.postTitle,
-          content: boardState.board.postContent
+          content: boardState.board.postContent,
+          userSeq: sessionStorage.getItem('userSeq')
         }
         console.log('writePost', postObj)
-        let response = await axios.post('/posts', postObj)
+        let response = await axios.post('/posts', null, { params: postObj })
         let { data } = response
         console.log(data)
         listBoard()
@@ -108,15 +110,11 @@ export const useBoardStore = defineStore(
       }
     }
 
-    const listComment = async (postSeq) => {
+    const listComment = async () => {
       //boardState.boardList = boardListData
       try {
-        let response = await axios.get(`/posts/${postSeq}/comments`)
-        //console.log(response)
-        // let data = await response.json()
-        // console.log(data)
+        let { data } = await axios.get(`/posts/${boardState.board.postSeq}/comments`)
 
-        let { data } = response
         boardState.board.comments = data
       } catch (error) {
         console.log(error)
@@ -124,20 +122,21 @@ export const useBoardStore = defineStore(
     }
     const writeComment = async () => {
       const commentObj = {
+        userSeq: sessionStorage.getItem('userSeq'),
         commentContent: commentState.comment.commentContent
       }
       console.log(commentObj)
       try {
-        let response = await axios.post(`/posts', ${boardState.board.postSeq}/comments`, commentObj)
-        let { data } = response
+        let { data } = await axios.post(`/posts/${boardState.board.postSeq}/comments`, null, {
+          params: commentObj
+        })
         console.log(data)
-        listComment()
       } catch (error) {
         console.log(error)
       }
     }
     const deleteComment = async (commentSeq) => {
-      let url = `/boards/${boardState.board.postSeq}/${commentSeq}`
+      let url = `/posts/comments/${commentSeq}`
 
       try {
         let response = await axios.delete(url)
@@ -149,121 +148,121 @@ export const useBoardStore = defineStore(
       }
     }
     // 더미 데이터
-    const boardListData = [
-      {
-        postSeq: 1,
-        postTitle: '내이름은 김도예',
-        postContent: 'sfd',
-        postTime: new Date(),
-        updateTime: new Date(),
-        likeCount: 1,
-        userSeq: 1,
-        viewCount: 15,
-        comments: [
-          {
-            commentSeq: '1',
-            commentContent: '네??????',
-            commentTime: new Date(),
-            postSeq: 1,
-            userSeq: 1
-          }
-        ]
-      },
-      {
-        postSeq: 2,
-        postTitle: '내이름은 칼도예',
-        postContent: '<h1>내가 곧 검이다.</h1>',
-        postTime: new Date(),
-        updateTime: new Date(),
-        likeCount: 1,
-        userSeq: 1,
-        viewCount: 15,
-        comments: [
-          {
-            commentSeq: '1',
-            commentContent: '네?',
-            commentTime: new Date(),
-            postSeq: 2,
-            userSeq: 1
-          }
-        ]
-      },
-      {
-        postSeq: 3,
-        postTitle: '내이름은 궁도예',
-        postContent: '<h1>내가 곧 활이다.</h1>',
-        postTime: new Date(),
-        updateTime: new Date(),
-        likeCount: 1,
-        viewCount: 15,
-        userSeq: 2,
-        comments: [
-          {
-            commentSeq: '1',
-            commentContent: '네?1',
-            commentTime: new Date(),
-            postSeq: 3,
-            userSeq: 1
-          },
-          {
-            commentSeq: '2',
-            commentContent: '네?2',
-            commentTime: new Date(),
-            postSeq: 3,
-            userSeq: 1
-          },
-          {
-            commentSeq: '1',
-            commentContent: '네?1',
-            commentTime: new Date(),
-            postSeq: 3,
-            userSeq: 1
-          },
-          {
-            commentSeq: '1',
-            commentContent: '네?1',
-            commentTime: new Date(),
-            postSeq: 3,
-            userSeq: 1
-          },
-          {
-            commentSeq: '1',
-            commentContent: '네?1',
-            commentTime: new Date(),
-            postSeq: 3,
-            userSeq: 1
-          },
-          {
-            commentSeq: '1',
-            commentContent: '네?1',
-            commentTime: new Date(),
-            postSeq: 3,
-            userSeq: 1
-          },
-          {
-            commentSeq: '1',
-            commentContent: '네?1',
-            commentTime: new Date(),
-            postSeq: 3,
-            userSeq: 1
-          },
-          {
-            commentSeq: '1',
-            commentContent: '네?1',
-            commentTime: new Date(),
-            postSeq: 3,
-            userSeq: 1
-          },
-          {
-            commentSeq: '1',
-            commentContent: '네?1',
-            commentTime: new Date(),
-            postSeq: 3,
-            userSeq: 1
-          }
-        ]
-      }
-    ]
+    // const boardListData = [
+    //   {
+    //     postSeq: 1,
+    //     postTitle: '내이름은 김도예',
+    //     postContent: 'sfd',
+    //     postTime: new Date(),
+    //     updateTime: new Date(),
+    //     likeCount: 1,
+    //     userSeq: 1,
+    //     viewCount: 15,
+    //     comments: [
+    //       {
+    //         commentSeq: '1',
+    //         commentContent: '네??????',
+    //         commentTime: new Date(),
+    //         postSeq: 1,
+    //         userSeq: 1
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     postSeq: 2,
+    //     postTitle: '내이름은 칼도예',
+    //     postContent: '<h1>내가 곧 검이다.</h1>',
+    //     postTime: new Date(),
+    //     updateTime: new Date(),
+    //     likeCount: 1,
+    //     userSeq: 1,
+    //     viewCount: 15,
+    //     comments: [
+    //       {
+    //         commentSeq: '1',
+    //         commentContent: '네?',
+    //         commentTime: new Date(),
+    //         postSeq: 2,
+    //         userSeq: 1
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     postSeq: 3,
+    //     postTitle: '내이름은 궁도예',
+    //     postContent: '<h1>내가 곧 활이다.</h1>',
+    //     postTime: new Date(),
+    //     updateTime: new Date(),
+    //     likeCount: 1,
+    //     viewCount: 15,
+    //     userSeq: 2,
+    //     comments: [
+    //       {
+    //         commentSeq: '1',
+    //         commentContent: '네?1',
+    //         commentTime: new Date(),
+    //         postSeq: 3,
+    //         userSeq: 1
+    //       },
+    //       {
+    //         commentSeq: '2',
+    //         commentContent: '네?2',
+    //         commentTime: new Date(),
+    //         postSeq: 3,
+    //         userSeq: 1
+    //       },
+    //       {
+    //         commentSeq: '1',
+    //         commentContent: '네?1',
+    //         commentTime: new Date(),
+    //         postSeq: 3,
+    //         userSeq: 1
+    //       },
+    //       {
+    //         commentSeq: '1',
+    //         commentContent: '네?1',
+    //         commentTime: new Date(),
+    //         postSeq: 3,
+    //         userSeq: 1
+    //       },
+    //       {
+    //         commentSeq: '1',
+    //         commentContent: '네?1',
+    //         commentTime: new Date(),
+    //         postSeq: 3,
+    //         userSeq: 1
+    //       },
+    //       {
+    //         commentSeq: '1',
+    //         commentContent: '네?1',
+    //         commentTime: new Date(),
+    //         postSeq: 3,
+    //         userSeq: 1
+    //       },
+    //       {
+    //         commentSeq: '1',
+    //         commentContent: '네?1',
+    //         commentTime: new Date(),
+    //         postSeq: 3,
+    //         userSeq: 1
+    //       },
+    //       {
+    //         commentSeq: '1',
+    //         commentContent: '네?1',
+    //         commentTime: new Date(),
+    //         postSeq: 3,
+    //         userSeq: 1
+    //       },
+    //       {
+    //         commentSeq: '1',
+    //         commentContent: '네?1',
+    //         commentTime: new Date(),
+    //         postSeq: 3,
+    //         userSeq: 1
+    //       }
+    //     ]
+    //   }
+    // ]
 
     return {
       boardState,

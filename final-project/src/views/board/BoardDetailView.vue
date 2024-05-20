@@ -3,6 +3,8 @@
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { useBoardStore } from '@/stores/boardStore'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 // const clickPostMenu = ref(false)
 // const toggleDropdown = () => (clickPostMenu.value = !clickPostMenu.value)
 const { getUserNickname } = useUserStore()
@@ -24,12 +26,17 @@ const getCommentNicknameList = async () => {
 
 getPostNickname()
 getCommentNicknameList()
-
+boardStore.listComment()
 const comment = ref('')
 
 const insertComment = () => {
   commentState.comment.commentContent = comment.value
   boardStore.writeComment()
+  boardStore.listComment()
+}
+const deletePost = () => {
+  boardStore.deletePost()
+  router.push('/board')
 }
 const timeToString = (time) => {
   let data = moment(time).format('yyyy.M.DD HH:mm')

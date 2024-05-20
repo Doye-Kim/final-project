@@ -8,23 +8,22 @@ export const useAttractionStore = defineStore('attractionStore', () => {
     sidoCode: 0,
     gugunCode: 0
   })
-  const markers = ref([])
+  const attractions = ref([])
   const getMarkers = async () => {
+    attractions.value = []
     for (let i in attractionState.list) {
-      console.log(attractionState.list[i])
       let attractionObj = {
         contentTypeId: attractionState.list[i],
         sidoCode: attractionState.sidoCode,
         gugunCode: attractionState.gugunCode
       }
-      console.log(attractionObj)
       let { data } = await axios.get('/attraction/place', { params: attractionObj })
-      console.log(data)
       data.forEach((item) => {
-        markers.value.push(item)
+        item.contentTypeId = attractionObj.contentTypeId
+        attractions.value.push(item)
       })
     }
-    console.log(markers)
+    console.log(attractions)
   }
-  return { attractionState, getMarkers }
+  return { attractionState, getMarkers, attractions }
 })

@@ -42,7 +42,7 @@ const stripTags = (str) => {
 
         <div class="info infobottom">
           <div><img class="infoIcon" src="@/assets/img/comment.png" /></div>
-          <div>{{ board.comments.length }}</div>
+          <!-- <div>{{ board.comments.length }}</div> -->
           <div><img class="infoIcon" src="@/assets/img/like.png" /></div>
           <div>{{ board.likeCount }}</div>
           <div><img class="infoIcon" src="@/assets/img/views.png" /></div>
