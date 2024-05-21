@@ -4,9 +4,38 @@ import AccountInformation from '@/components/mypage/AccountInformation.vue'
 import MyPlace from '@/components/mypage/MyPlace.vue'
 import MyActivity from '@/components/mypage/MyActivity.vue'
 import MyPlan from '@/components/mypage/MyPlan.vue'
+import { useMyStore } from '@/stores/myStore'
+const { getBookmarks, getPlans, getPost, getCommentPost, getLikePost, myState, listState } =
+  useMyStore()
 const isSelected = ref(1)
+
 const changeValue = (value) => {
   isSelected.value = value
+}
+
+const bookmarkClick = () => {
+  changeValue(1)
+  getBookmarks()
+}
+const planClick = () => {
+  changeValue(2)
+  getPlans()
+}
+const postClick = async () => {
+  changeValue(3)
+  await getPost()
+  listState.list = myState.myPost
+}
+const commentClick = async () => {
+  changeValue(4)
+  await getCommentPost()
+  listState.list = myState.myCommentPost
+}
+
+const likeClick = async () => {
+  changeValue(5)
+  await getLikePost()
+  listState.list = myState.myLikePost
 }
 import { useUserStore } from '@/stores/userStore'
 const { getUserInfo } = useUserStore()
@@ -17,23 +46,26 @@ getUserInfo()
     <div class="menu orbit">
       <p class="category">관광지</p>
       <div class="hr" />
-      <p class="list" :class="{ select: isSelected === 1 ? true : false }" @click="changeValue(1)">
+      <p class="list" :class="{ select: isSelected === 1 ? true : false }" @click="bookmarkClick">
         즐겨찾기 한 관광지
       </p>
-      <p class="list" :class="{ select: isSelected === 2 ? true : false }" @click="changeValue(2)">
+      <p class="list" :class="{ select: isSelected === 2 ? true : false }" @click="planClick">
         나의 플랜
       </p>
 
       <p class="category">커뮤니티</p>
       <div class="hr" />
-      <p class="list" :class="{ select: isSelected === 3 ? true : false }" @click="changeValue(3)">
+      <p class="list" :class="{ select: isSelected === 3 ? true : false }" @click="postClick">
         내가 쓴 글
       </p>
-      <p class="list" :class="{ select: isSelected === 4 ? true : false }" @click="changeValue(4)">
+      <p class="list" :class="{ select: isSelected === 4 ? true : false }" @click="commentClick">
         댓글 단 글
       </p>
+      <p class="list" :class="{ select: isSelected === 5 ? true : false }" @click="likeClick">
+        좋아요 한 글
+      </p>
       <div id="empty"></div>
-      <p class="list" :class="{ select: isSelected === 5 ? true : false }" @click="changeValue(5)">
+      <p class="list" :class="{ select: isSelected === 6 ? true : false }" @click="changeValue(6)">
         계정 정보
       </p>
       <p class="list">탈퇴</p>
@@ -41,8 +73,8 @@ getUserInfo()
     <div class="detail">
       <MyPlace v-show="isSelected === 1" />
       <MyPlan v-show="isSelected === 2" />
-      <MyActivity v-show="isSelected === 3 || isSelected === 4" />
-      <AccountInformation v-if="isSelected === 5" />
+      <MyActivity v-show="isSelected === 3 || isSelected === 4 || isSelected === 5" />
+      <AccountInformation v-if="isSelected === 6" />
     </div>
   </div>
 </template>
