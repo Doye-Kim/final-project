@@ -13,13 +13,13 @@ const changeValue = (value) => {
   isSelected.value = value
 }
 
-const bookmarkClick = () => {
+const bookmarkClick = async () => {
   changeValue(1)
-  getBookmarks()
+  await getBookmarks()
 }
-const planClick = () => {
+const planClick = async () => {
   changeValue(2)
-  getPlans()
+  await getPlans()
 }
 const postClick = async () => {
   changeValue(3)

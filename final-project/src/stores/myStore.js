@@ -18,6 +18,7 @@ export const useMyStore = defineStore('myStore', () => {
   const getBookmarks = async () => {
     let { data } = await axios.get(`/bookmarks/${userSeq}`)
     myState.myBookmark = data
+    console.log(myState.myBookmark)
   }
 
   const getPlans = async () => {
