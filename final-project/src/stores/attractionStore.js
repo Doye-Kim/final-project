@@ -5,9 +5,14 @@ import axios from '@/common/axios-config'
 export const useAttractionStore = defineStore('attractionStore', () => {
   const attractionState = reactive({
     list: [],
+    attraction: {},
     sidoCode: 0,
     gugunCode: 0
   })
+  const getAttraction = async (contentId) => {
+    let { data } = await axios.get(`/place/${contentId}`)
+    return data
+  }
   const attractions = ref([])
   const getMarkers = async () => {
     attractions.value = []
@@ -25,5 +30,5 @@ export const useAttractionStore = defineStore('attractionStore', () => {
     }
     console.log(attractions)
   }
-  return { attractionState, getMarkers, attractions }
+  return { attractionState, getMarkers, attractions, getAttraction }
 })

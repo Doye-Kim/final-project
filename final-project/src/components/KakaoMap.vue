@@ -1,17 +1,25 @@
 <template>
   <div id="container">
-    <div id="map"></div>
+    <div id="map">
+      <AttractionModal v-if="modalStore.AttractionIsOpen" />
+      <img id="bookmarkBtn" @click="bookmarkBtnClick" src="@/assets/img/star_empty.png" />
+      <img id="searchBtn" @click="searchBtnClick" src="@/assets/img/searchBtn.png" />
+    </div>
   </div>
 </template>
 
 <script setup>
+import AttractionModal from '@/components/modals/AttractionModal.vue'
 import { ref, onMounted, watch, toRefs } from 'vue'
 import { useAttractionStore } from '@/stores/attractionStore'
 const { attractions } = toRefs(useAttractionStore())
 const { attractionState } = useAttractionStore()
+import { useModalStore } from '@/stores/modalStore'
+const modalStore = useModalStore()
+
 let markers = ref([])
 // let onMarkerContents = ref([])
-let selectMarker = ''
+
 onMounted(() => {
   if (window.kakao && window.kakao.maps) {
     const map = initMap()
@@ -56,10 +64,10 @@ const deleteAll = () => {
   markers.value = []
   console.log(markers)
 }
-const displayMarker = (attractions, map) => {
-  console.log('displayMarker')
+function displayMarker(attractions, map) {
   const imgSize = new kakao.maps.Size(25, 25)
   let newLatLng = new kakao.maps.LatLng(attractions[0].mapy, attractions[0].mapx)
+
   attractions.forEach((item) => {
     const imgSrc = `/src/assets/img/newmarker${item.contentTypeId}.png`
     const markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize)
@@ -68,57 +76,45 @@ const displayMarker = (attractions, map) => {
       title: item.title,
       image: markerImg
     })
-    console.log(marker.position)
-    marker.setMap(map)
-    const content = `<div
-    							      style="
-    							        background-color: rgba(255, 255, 255, 0.9);
-    							        border-radius: 10px;
-    							        box-shadow: 2px 2px 2px gray;
-    							        width: 100%;
-    							        padding: 10px;
-                          z-index: 100;
-    							      "
-    							    >
-    							      <div><b style="color: rgb(99, 141, 182);">${item.title}</b></div>
-    							      <div style="text-align: center;"><span>${item.addr1}</span></div>
-    							      <div style="text-align: right"><img src="/src/assets/img/plan.png"><img style="margin: 0 5px 0 5px;" src="/src/assets/img/bookmark_fill.png"></div>
-                      </div>`
-    const customOverlay = new kakao.maps.CustomOverlay({
-      content: content,
-      position: marker.getPosition(),
-      yAnchor: 1.5
+
+    kakao.maps.event.addListener(marker, 'click', function () {
+      console.log('click', marker.getPosition())
+
+      attractionState.attraction = item
+      modalStore.AttractionIsOpen = !modalStore.AttractionIsOpen
+      console.log(attractionState.attraction)
+      map.setCenter(marker.getPosition())
     })
-    kakao.maps.event.addListener(marker, 'click', markerClickToggle(map, customOverlay))
+
+    marker.setMap(map)
     markers.value.push(marker)
   })
-  // console.log(marker.position)
+
   map.setCenter(newLatLng)
-}
-function markerClickToggle(map, customOverlay) {
-  return function () {
-    console.log(selectMarker)
-    if (selectMarker.length !== 0) {
-      selectMarker.setMap(null)
-    }
-    if (selectMarker == customOverlay) {
-      selectMarker.setMap(null)
-      selectMarker = ''
-      return
-    }
-    selectMarker = customOverlay
-    customOverlay.setMap(map)
-  }
 }
 </script>
 
 <style scoped>
 #container {
-  width: 70%;
+  width: 85%;
   height: 70vh;
 }
 #map {
   width: 100%;
   height: 100%;
+}
+#bookmarkBtn {
+  position: absolute;
+  z-index: 199;
+  right: 5px;
+  top: 5px;
+  width: 30px;
+}
+#searchBtn {
+  position: absolute;
+  z-index: 199;
+  left: 5px;
+  top: 5px;
+  width: 30px;
 }
 </style>
