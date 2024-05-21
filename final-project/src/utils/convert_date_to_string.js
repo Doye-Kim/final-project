@@ -5,6 +5,7 @@ const convertDateToString = (dateString) => {
   const now = moment()
 
   const diff = now.diff(dateTime)
+
   const calDuration = moment.duration(diff)
   const years = calDuration.years()
   const months = calDuration.months()
@@ -12,7 +13,7 @@ const convertDateToString = (dateString) => {
   const hours = calDuration.hours()
   const minutes = calDuration.minutes()
   const seconds = calDuration.seconds()
-
+  console.log(months, days, hours, minutes, seconds)
   if (
     years === 0 &&
     months === 0 &&
@@ -22,7 +23,7 @@ const convertDateToString = (dateString) => {
     seconds !== undefined &&
     (seconds === 0 || seconds < 1)
   ) {
-    return '0초'
+    return '방금 전'
   }
   if (
     years === 0 &&
@@ -41,7 +42,7 @@ const convertDateToString = (dateString) => {
     return `${hours}시`
   }
   if (years === 0 && months === 0) {
-    return `${hours}일`
+    return `${days}일`
   }
   if (years === 0) {
     return `${months}개월`
