@@ -11,7 +11,7 @@ onMounted(async () => {
   <div>
     <div class="card-container">
       <div class="card" v-for="(item, index) in myState.myBookmark" :key="index">
-        <img class="card-img" :src="item.first_image" />
+        <img class="card-img" :src="item.firstImage" />
         <div class="card-content">
           <div class="title-icon">
             <div class="card-title">{{ item.title }}</div>

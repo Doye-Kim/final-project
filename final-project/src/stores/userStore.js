@@ -1,8 +1,12 @@
 import { reactive } from 'vue'
 import { defineStore } from 'pinia'
+import { useAuthStore } from './authStore'
 import axios from '@/common/axios-config'
+import { useRouter } from 'vue-router'
 
 export const useUserStore = defineStore('userStore', () => {
+  const { logout } = useAuthStore()
+  const router = useRouter()
   const userInfo = reactive({
     userSeq: '',
     userNickname: '',
@@ -48,5 +52,13 @@ export const useUserStore = defineStore('userStore', () => {
     console.log(data)
     return data
   }
-  return { userInfo, getUserNickname, getUserInfo, updateUserInfo, updateUserPassword }
+
+  const deleteUser = async () => {
+    let { data } = await axios.post(`/users/${userInfo.userSeq}`)
+    logout()
+    router.push('/')
+    return data
+  }
+
+  return { userInfo, getUserNickname, getUserInfo, updateUserInfo, updateUserPassword, deleteUser }
 })

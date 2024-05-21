@@ -1,13 +1,15 @@
 <script setup>
 import FriendModal from './modals/FriendModal.vue'
 import { useModalStore } from '@/stores/modalStore'
+import { useAuthStore } from '@/stores/authStore'
+const { authStore } = useAuthStore()
 const modalStore = useModalStore()
 const click = () => {
   modalStore.AddFriendIsOpen = !modalStore.AddFriendIsOpen
 }
 </script>
 <template>
-  <div>
+  <div v-if="authStore.isLogin">
     <FriendModal v-if="modalStore.AddFriendIsOpen" />
     <div class="btn-background" @click="click">
       <img class="friend-icon" src="@/assets/img/user_add.png" width="35px" />

@@ -38,7 +38,7 @@ const likeClick = async () => {
   listState.list = myState.myLikePost
 }
 import { useUserStore } from '@/stores/userStore'
-const { getUserInfo } = useUserStore()
+const { getUserInfo, deleteUser } = useUserStore()
 getUserInfo()
 </script>
 <template>
@@ -68,7 +68,7 @@ getUserInfo()
       <p class="list" :class="{ select: isSelected === 6 ? true : false }" @click="changeValue(6)">
         계정 정보
       </p>
-      <p class="list">탈퇴</p>
+      <p class="list" @click="deleteUser">탈퇴</p>
     </div>
     <div class="detail">
       <MyPlace v-show="isSelected === 1" />
