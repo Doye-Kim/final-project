@@ -25,10 +25,10 @@ const getCommentNicknameList = async () => {
 }
 const userSeq = sessionStorage.getItem('userSeq')
 
+const likeCount = ref(boardState.board.likeCount)
+
 const clickLike = async () => {
-  await likePost(userSeq)
-  await detailBoard(boardState.board.postSeq)
-  await listComment()
+  likeCount.value = await likePost(userSeq)
 }
 onMounted(async () => {
   await viewPost(userSeq)
@@ -60,12 +60,6 @@ const timeToString = (time) => {
 console.log(boardState.board)
 
 const isSame = sessionStorage.getItem('userSeq') == boardState.board.userSeq
-const isSameComment = []
-for (let i in boardState.board.comments) {
-  isSameComment.push(sessionStorage.getItem('userSeq') == boardState.board.comments[i].userSeq)
-}
-console.log(isSameComment)
-console.log(sessionStorage.getItem('userSeq') == boardState.board.userSeq)
 </script>
 
 <template>
@@ -86,7 +80,7 @@ console.log(sessionStorage.getItem('userSeq') == boardState.board.userSeq)
         | {{ timeToString(boardState.board.postTime) }}
         <span class="likeviewInfo"
           ><img src="@/assets/img/like.png" width="15px" @click="clickLike" id="likeBtn" />
-          <span>{{ boardState.board.likeCount }}</span>
+          <span>{{ likeCount }}</span>
           <img src="@/assets/img/views.png" width="15px" />
           <span>{{ boardState.board.viewCount }}</span>
         </span>
@@ -108,7 +102,7 @@ console.log(sessionStorage.getItem('userSeq') == boardState.board.userSeq)
               <span
                 class="comment-delete"
                 @click="boardStore.deleteComment(item.commentSeq)"
-                v-if="isSameComment[index]"
+                v-if="boardState.isSameComment[index]"
                 >삭제</span
               >
             </div>

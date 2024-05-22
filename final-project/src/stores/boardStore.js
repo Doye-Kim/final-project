@@ -24,7 +24,8 @@ export const useBoardStore = defineStore(
         comments: []
       },
       nickname: '',
-      commentNnList: []
+      commentNnList: [],
+      isSameComment: []
     })
 
     const commentState = reactive({
@@ -51,8 +52,8 @@ export const useBoardStore = defineStore(
       let likeObj = {
         userSeq: userSeq
       }
-      let data = await axios.post(`/posts/${boardState.board.postSeq}/like`, likeObj)
-      console.log(data)
+      let { data } = await axios.post(`/posts/${boardState.board.postSeq}/like`, likeObj)
+      return data
     }
     const listBoard = async () => {
       //boardState.boardList = boardListData
@@ -132,13 +133,19 @@ export const useBoardStore = defineStore(
         console.log(error)
       }
     }
-
     const listComment = async () => {
       //boardState.boardList = boardListData
       try {
         let { data } = await axios.get(`/posts/${boardState.board.postSeq}/comments`)
         boardState.board.comments = data
         console.log(data)
+        boardState.commentNnList.length = 0
+        for (let i in boardState.board.comments) {
+          boardState.commentNnList.push(await getUserNickname(boardState.board.comments[i].userSeq))
+          boardState.isSameComment.push(
+            sessionStorage.getItem('userSeq') == boardState.board.comments[i].userSeq
+          )
+        }
       } catch (error) {
         console.log(error)
       }
