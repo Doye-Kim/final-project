@@ -4,6 +4,15 @@
       <AttractionModal v-if="modalStore.AttractionIsOpen" />
       <img id="bookmarkBtn" @click="bookmarkBtnClick" src="@/assets/img/star_empty.png" />
       <img id="searchBtn" @click="searchBtnClick" src="@/assets/img/searchBtn.png" />
+      <div v-if="modalStore.SearchInputIsOpen" class="inputDiv">
+        <input
+          type="text"
+          id="searchInput"
+          class="orbit"
+          @keyup.enter="submit"
+          v-model="searchWord"
+        /><img class="closeBtnImg" src="@/assets/img/close-btn.png" @click="closeSearchBtn" />
+      </div>
       <FriendBookmarkModal v-if="modalStore.FriendBookmarkIsOpen" />
     </div>
   </div>
@@ -15,14 +24,18 @@ import AttractionModal from '@/components/modals/AttractionModal.vue'
 import { ref, onMounted, watch, toRefs } from 'vue'
 import { useAttractionStore } from '@/stores/attractionStore'
 const { attractions } = toRefs(useAttractionStore())
-const { attractionState } = useAttractionStore()
+const { attractionState, searchAttraction } = useAttractionStore()
 import { useModalStore } from '@/stores/modalStore'
 const modalStore = useModalStore()
-import { useMyStore } from '@/stores/myStore'
-const { myState } = useMyStore()
+
 let markers = ref([])
 // let onMarkerContents = ref([])
-
+const searchWord = ref('')
+const submit = () => {
+  modalStore.AttractionIsOpen = false
+  console.log(searchWord.value)
+  searchAttraction(searchWord.value)
+}
 onMounted(() => {
   if (window.kakao && window.kakao.maps) {
     const map = initMap()
@@ -30,7 +43,7 @@ onMounted(() => {
 
     watch(
       attractions,
-      (newAtt, oldAtt) => {
+      (newAtt) => {
         console.log('watch', newAtt)
         // if (attractionState.list.length > 0 && newAtt.length == 0)
         //   alert(' ̗̀(ꙨꙨ)ː̖́\n해당 지역엔 선택하신 컨텐츠의 관광지가 없습니다')
@@ -55,7 +68,11 @@ const bookmarkBtnClick = () => {
 }
 
 const searchBtnClick = () => {
-  modalStore.SearchInputIsOpen = !modalStore.SearchInputIsOpen
+  modalStore.SearchInputIsOpen = true
+}
+const closeSearchBtn = () => {
+  console.log('close')
+  modalStore.SearchInputIsOpen = false
 }
 
 const initMap = () => {
@@ -134,5 +151,33 @@ function displayMarker(attractions, map) {
   cursor: pointer;
   top: 5px;
   width: 30px;
+}
+#searchInput {
+  position: absolute;
+  z-index: 200;
+  left: 5px;
+  cursor: pointer;
+  top: 5px;
+  width: 150px;
+  border: 1px solid #dadada;
+  border-radius: 20px;
+  background-image: url('../assets/img/Search_alt.png');
+  background-repeat: no-repeat;
+  background-position: 5px center;
+  padding-left: 35px;
+  height: 25px;
+}
+.inputDiv {
+  position: relative;
+  width: 190px;
+  height: 25px;
+}
+.closeBtnImg {
+  position: absolute;
+  z-index: 250;
+  width: 20px;
+  top: 10px;
+  right: 5px;
+  cursor: pointer;
 }
 </style>

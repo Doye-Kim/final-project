@@ -40,5 +40,26 @@ export const useAttractionStore = defineStore('attractionStore', () => {
     })
     console.log(attractions)
   }
-  return { attractionState, getMarkers, attractions, getAttraction, getBookmarkMarkers }
+
+  const searchAttraction = async (title) => {
+    attractions.value = []
+    let attractionObj = {
+      title: title
+    }
+    console.log(attractionObj)
+    let { data } = await axios.get('/attraction/search', { params: attractionObj })
+    data.forEach((item) => {
+      item.contentTypeId = 41
+      attractions.value.push(item)
+    })
+    console.log(attractions.value)
+  }
+  return {
+    attractionState,
+    searchAttraction,
+    getMarkers,
+    attractions,
+    getAttraction,
+    getBookmarkMarkers
+  }
 })

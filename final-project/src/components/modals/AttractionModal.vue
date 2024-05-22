@@ -1,8 +1,4 @@
 <script setup>
-import addDays from 'date-fns/addDays'
-
-import { useModalStore } from '@/stores/modalStore'
-const modalStore = useModalStore()
 import { usePlanStore } from '@/stores/planStore'
 import { ref } from 'vue'
 import VueDatePicker from '@vuepic/vue-datepicker'
@@ -68,7 +64,7 @@ const handleDate = (modelData) => {
 }
 </script>
 <template>
-  <div class="attraction-modal-container">
+  <div class="attraction-modal-container orbit">
     <div>
       <div>
         <b>{{ attractionState.attraction.title }}</b>
