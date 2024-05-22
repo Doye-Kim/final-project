@@ -1,12 +1,14 @@
 <script setup>
+import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useBoardStore } from '@/stores/boardStore'
-// import { useAuthStore } from '@/stores/authStore'
 import convertDateToString from '@/utils/convert_date_to_string'
-// const authStore = useAuthStore()
 const { boardState } = useBoardStore()
 const boardStore = useBoardStore()
-boardStore.listBoard()
+
+onMounted(async () => {
+  await boardStore.listBoard()
+})
 const postClick = (board) => {
   boardState.board = board
   console.log(boardState.board)
@@ -27,8 +29,8 @@ const stripTags = (str) => {
     <!-- todo: 글자수 넘어가면 말줄임표-->
     <div class="postList">
       <RouterLink
-        v-for="board in boardState.boardList"
-        :key="board.postSeq"
+        v-for="(board, index) in boardState.boardList"
+        :key="index"
         to="/boardDetail"
         class="post orbit"
         @click="postClick(board)"
@@ -36,13 +38,13 @@ const stripTags = (str) => {
         <b class="title">{{ board.postTitle }}</b>
         <p class="contents">{{ stripTags(board.postContent) }}</p>
         <div class="info">
-          <!-- {{ authStore.userInfo.userName }} -->
+          {{ boardState.nicknameList[index] || 'Loading...' }}
           | {{ convertDateToString(board.postTime) }} 전<br />
         </div>
 
         <div class="info infobottom">
-          <div><img class="infoIcon" src="@/assets/img/comment.png" /></div>
-          <!-- <div>{{ board.comments.length }}</div> -->
+          <!-- <div><img class="infoIcon" src="@/assets/img/comment.png" /></div> -->
+          <!-- <div>{{ board.comments }}</div> -->
           <div><img class="infoIcon" src="@/assets/img/like.png" /></div>
           <div>{{ board.likeCount }}</div>
           <div><img class="infoIcon" src="@/assets/img/views.png" /></div>

@@ -13,7 +13,6 @@ const convertDateToString = (dateString) => {
   const hours = calDuration.hours()
   const minutes = calDuration.minutes()
   const seconds = calDuration.seconds()
-  console.log(months, days, hours, minutes, seconds)
   if (
     years === 0 &&
     months === 0 &&

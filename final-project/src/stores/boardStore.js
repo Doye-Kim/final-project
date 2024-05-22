@@ -1,14 +1,17 @@
 import { reactive } from 'vue'
 import axios from '@/common/axios-config'
 import { defineStore } from 'pinia'
+import { useUserStore } from '@/stores/userStore'
 
 export const useBoardStore = defineStore(
   'boardStore',
   () => {
     //   const boardList = ref([]) // 게시글 리스트
     //   const board = ref({}) // 게시글 하나
+    const { getUserNickname } = useUserStore()
     const boardState = reactive({
       boardList: [],
+      nicknameList: [],
       board: {
         postSeq: 0,
         postTitle: '',
@@ -35,6 +38,22 @@ export const useBoardStore = defineStore(
       }
     })
 
+    const viewPost = async (userSeq) => {
+      // /posts/{postSeq}/view
+      let viewObj = {
+        userSeq: userSeq
+      }
+      let { data } = await axios.post(`/posts/${boardState.board.postSeq}/view`, viewObj)
+      console.log(data)
+    }
+
+    const likePost = async (userSeq) => {
+      let likeObj = {
+        userSeq: userSeq
+      }
+      let data = await axios.post(`/posts/${boardState.board.postSeq}/like`, likeObj)
+      console.log(data)
+    }
     const listBoard = async () => {
       //boardState.boardList = boardListData
       try {
@@ -45,6 +64,10 @@ export const useBoardStore = defineStore(
 
         let { data } = response
         boardState.boardList = data
+        data.forEach(async (el) => {
+          let nickname = await getUserNickname(el.userSeq)
+          boardState.nicknameList.push(nickname)
+        })
         console.log(data)
       } catch (error) {
         console.log(error)
@@ -114,8 +137,8 @@ export const useBoardStore = defineStore(
       //boardState.boardList = boardListData
       try {
         let { data } = await axios.get(`/posts/${boardState.board.postSeq}/comments`)
-
         boardState.board.comments = data
+        console.log(data)
       } catch (error) {
         console.log(error)
       }
@@ -147,122 +170,6 @@ export const useBoardStore = defineStore(
         console.log(error)
       }
     }
-    // 더미 데이터
-    // const boardListData = [
-    //   {
-    //     postSeq: 1,
-    //     postTitle: '내이름은 김도예',
-    //     postContent: 'sfd',
-    //     postTime: new Date(),
-    //     updateTime: new Date(),
-    //     likeCount: 1,
-    //     userSeq: 1,
-    //     viewCount: 15,
-    //     comments: [
-    //       {
-    //         commentSeq: '1',
-    //         commentContent: '네??????',
-    //         commentTime: new Date(),
-    //         postSeq: 1,
-    //         userSeq: 1
-    //       }
-    //     ]
-    //   },
-    //   {
-    //     postSeq: 2,
-    //     postTitle: '내이름은 칼도예',
-    //     postContent: '<h1>내가 곧 검이다.</h1>',
-    //     postTime: new Date(),
-    //     updateTime: new Date(),
-    //     likeCount: 1,
-    //     userSeq: 1,
-    //     viewCount: 15,
-    //     comments: [
-    //       {
-    //         commentSeq: '1',
-    //         commentContent: '네?',
-    //         commentTime: new Date(),
-    //         postSeq: 2,
-    //         userSeq: 1
-    //       }
-    //     ]
-    //   },
-    //   {
-    //     postSeq: 3,
-    //     postTitle: '내이름은 궁도예',
-    //     postContent: '<h1>내가 곧 활이다.</h1>',
-    //     postTime: new Date(),
-    //     updateTime: new Date(),
-    //     likeCount: 1,
-    //     viewCount: 15,
-    //     userSeq: 2,
-    //     comments: [
-    //       {
-    //         commentSeq: '1',
-    //         commentContent: '네?1',
-    //         commentTime: new Date(),
-    //         postSeq: 3,
-    //         userSeq: 1
-    //       },
-    //       {
-    //         commentSeq: '2',
-    //         commentContent: '네?2',
-    //         commentTime: new Date(),
-    //         postSeq: 3,
-    //         userSeq: 1
-    //       },
-    //       {
-    //         commentSeq: '1',
-    //         commentContent: '네?1',
-    //         commentTime: new Date(),
-    //         postSeq: 3,
-    //         userSeq: 1
-    //       },
-    //       {
-    //         commentSeq: '1',
-    //         commentContent: '네?1',
-    //         commentTime: new Date(),
-    //         postSeq: 3,
-    //         userSeq: 1
-    //       },
-    //       {
-    //         commentSeq: '1',
-    //         commentContent: '네?1',
-    //         commentTime: new Date(),
-    //         postSeq: 3,
-    //         userSeq: 1
-    //       },
-    //       {
-    //         commentSeq: '1',
-    //         commentContent: '네?1',
-    //         commentTime: new Date(),
-    //         postSeq: 3,
-    //         userSeq: 1
-    //       },
-    //       {
-    //         commentSeq: '1',
-    //         commentContent: '네?1',
-    //         commentTime: new Date(),
-    //         postSeq: 3,
-    //         userSeq: 1
-    //       },
-    //       {
-    //         commentSeq: '1',
-    //         commentContent: '네?1',
-    //         commentTime: new Date(),
-    //         postSeq: 3,
-    //         userSeq: 1
-    //       },
-    //       {
-    //         commentSeq: '1',
-    //         commentContent: '네?1',
-    //         commentTime: new Date(),
-    //         postSeq: 3,
-    //         userSeq: 1
-    //       }
-    //     ]
-    //   }
-    // ]
 
     return {
       boardState,
@@ -274,7 +181,9 @@ export const useBoardStore = defineStore(
       deletePost,
       listComment,
       writeComment,
-      deleteComment
+      deleteComment,
+      viewPost,
+      likePost
     }
   },
   {

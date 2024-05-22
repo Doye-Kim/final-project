@@ -1,6 +1,6 @@
 <script setup>
 // import { RouterLink } from 'vue-router'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { useBoardStore } from '@/stores/boardStore'
 import { useRouter } from 'vue-router'
@@ -9,7 +9,7 @@ const router = useRouter()
 // const toggleDropdown = () => (clickPostMenu.value = !clickPostMenu.value)
 const { getUserNickname } = useUserStore()
 const boardStore = useBoardStore()
-const { boardState, commentState } = boardStore
+const { boardState, commentState, viewPost, likePost, detailBoard, listComment } = boardStore
 import moment from 'moment'
 
 const getPostNickname = async () => {
@@ -23,16 +23,31 @@ const getCommentNicknameList = async () => {
 
   console.log(boardState.commentNnList)
 }
+const userSeq = sessionStorage.getItem('userSeq')
 
-getPostNickname()
-getCommentNicknameList()
-boardStore.listComment()
+const clickLike = async () => {
+  await likePost(userSeq)
+  await detailBoard(boardState.board.postSeq)
+  await listComment()
+}
+onMounted(async () => {
+  await viewPost(userSeq)
+  await detailBoard(boardState.board.postSeq)
+  await getPostNickname()
+  await getCommentNicknameList()
+  await listComment()
+})
 const comment = ref('')
 
-const insertComment = () => {
+const insertComment = async () => {
   commentState.comment.commentContent = comment.value
-  boardStore.writeComment()
-  boardStore.listComment()
+  comment.value = ''
+  try {
+    await boardStore.writeComment()
+    await boardStore.listComment()
+  } catch (err) {
+    console.log(err)
+  }
 }
 const deletePost = () => {
   boardStore.deletePost()
@@ -70,10 +85,10 @@ console.log(sessionStorage.getItem('userSeq') == boardState.board.userSeq)
         {{ boardState.nickname }}
         | {{ timeToString(boardState.board.postTime) }}
         <span class="likeviewInfo"
-          ><img src="@/assets/img/like.png" width="15px" />
+          ><img src="@/assets/img/like.png" width="15px" @click="clickLike" id="likeBtn" />
           <span>{{ boardState.board.likeCount }}</span>
           <img src="@/assets/img/views.png" width="15px" />
-          <span>{{ boardState.board.likeCount }}</span>
+          <span>{{ boardState.board.viewCount }}</span>
         </span>
       </div>
       <hr />
@@ -115,6 +130,9 @@ console.log(sessionStorage.getItem('userSeq') == boardState.board.userSeq)
   </div>
 </template>
 <style>
+#likeBtn {
+  cursor: pointer;
+}
 .boardContainer {
   position: relative;
   display: flex;
