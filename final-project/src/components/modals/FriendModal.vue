@@ -16,6 +16,7 @@ const getPhoneMask = (data) => {
 }
 const submit = () => {
   searchFriendByNumber(number.value)
+  number.value = ''
 }
 </script>
 
@@ -23,6 +24,7 @@ const submit = () => {
   <div class="container">
     <div class="search-area">
       <input
+        class="orbit"
         type="text"
         placeholder="전화번호로 친구 찾기"
         id="search-input"
@@ -31,10 +33,15 @@ const submit = () => {
         @keyup.enter="submit"
       />
     </div>
-    <ul class="friend-list">
+    <ul class="friend-list orbit">
       <li v-for="(item, index) in friendState.friendList" :key="index" class="friend-info">
         <span>{{ item.nickname }}</span>
-        <img @click="deleteFriend(item.followSeq)" width="20px" src="@/assets/img/close-btn.png" />
+        <img
+          @click="deleteFriend(item.followSeq)"
+          width="20px"
+          src="@/assets/img/close-btn.png"
+          class="deleteBtn"
+        />
       </li>
     </ul>
     <FriendInfoModal v-if="modalStore.FriendInfoIsOpen" />
@@ -65,6 +72,7 @@ const submit = () => {
 }
 .friend-list {
   height: 85%;
+  margin-top: 20px;
   overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -72,8 +80,14 @@ const submit = () => {
 .friend-list::-webkit-scrollbar {
   display: none;
 }
+.deleteBtn {
+  cursor: pointer;
+  position: absolute;
+  right: 35px;
+}
 .friend-info {
   display: flex;
   align-items: center;
+  margin-top: 5px;
 }
 </style>

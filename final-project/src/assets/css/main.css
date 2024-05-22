@@ -1,6 +1,9 @@
 body {
   background-color: white;
 }
+:root {
+  --maincolor: #ffc56f;
+}
 /* input:focus {
   outline: 1px solid #ffa967;
   border: none;

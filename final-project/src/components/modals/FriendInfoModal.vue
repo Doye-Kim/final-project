@@ -94,7 +94,7 @@ input:focus {
   font-size: small;
   border-radius: 20px;
   border-width: 0;
-  background-color: #ffe6ca;
+  background-color: var(--maincolor);
 }
 /* input {
   -webkit-appearance: none;

@@ -109,7 +109,7 @@ const close = () => {
   margin: 0 auto;
 }
 input:focus {
-  outline: 1px solid #ffa967;
+  outline: 1px solid var(--maincolor);
   border: none;
 }
 /* todo: 크기 반응형으로 변경 */
@@ -138,7 +138,7 @@ input:focus {
   font-size: small;
   border-radius: 20px;
   border-width: 0;
-  background-color: #ffe6ca;
+  background-color: var(--maincolor);
 }
 /* input {
   -webkit-appearance: none;

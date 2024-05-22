@@ -59,7 +59,10 @@ export const useFriendStore = defineStore('friendStore', () => {
     friendState.friend = data
     console.log(data)
     console.log(friendState.friend.userSeq)
-    modalStore.FriendInfoIsOpen = true
+    if (data == '') {
+      console.log('null')
+      alert('찾는 친구가 없습니다.')
+    } else modalStore.FriendInfoIsOpen = true
   }
   return { friendState, searchFriendByNumber, getList, addFriend, deleteFriend }
 })

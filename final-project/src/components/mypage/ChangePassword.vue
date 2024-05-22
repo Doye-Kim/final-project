@@ -39,7 +39,7 @@ input {
   margin-bottom: 3%;
 }
 input:focus {
-  outline: 1px solid #ffa967;
+  outline: 1px solid var(--maincolor);
   border: none;
 }
 #saveBtn {
@@ -47,7 +47,7 @@ input:focus {
   width: 50%;
   height: auto;
   border-radius: 20px;
-  background-color: #ffe6ca;
+  background-color: var(--maincolor);
   padding: 2% 0 2% 0;
 }
 #saveBtn:hover {

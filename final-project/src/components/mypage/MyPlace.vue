@@ -16,7 +16,7 @@ onMounted(async () => {
         <div class="card-content">
           <div class="title-icon">
             <div class="card-title">{{ item.title }}</div>
-            <img class="bookmark-icon" src="@/assets/img/bookmark.png" alt="bookmark" />
+            <img class="bookmark-icon" src="@/assets/img/bookmark_fill_main.png" alt="bookmark" />
           </div>
           <div class="card-address">{{ item.addr1 }}</div>
         </div>
@@ -69,8 +69,9 @@ onMounted(async () => {
 }
 
 .bookmark-icon {
-  color: #ff8800;
+  color: var(--maincolor);
   font-size: 20px;
+  width: 30px;
   vertical-align: middle;
 }
 </style>

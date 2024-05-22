@@ -92,7 +92,7 @@ const groupPlansByDate = () => {
 #list-img {
   position: absolute;
   width: 20px;
-  top: 10px;
+  top: 20px;
   right: 10px;
   cursor: pointer;
 }

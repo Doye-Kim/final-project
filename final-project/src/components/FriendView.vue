@@ -24,7 +24,7 @@ const click = () => {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #ff9900;
+  background-color: var(--maincolor);
   border-radius: 50%;
   box-shadow: 3px 3px 5px grey;
   cursor: pointer;

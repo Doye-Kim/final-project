@@ -61,7 +61,7 @@ input:focus {
   width: 50%;
   height: auto;
   border-radius: 20px;
-  background-color: #ffe6ca;
+  background-color: var(--maincolor);
   padding: 2% 3% 2% 3%;
   margin-bottom: 20px;
 }
@@ -129,11 +129,11 @@ input:focus {
   transform: translateY(-50%);
 
   border-radius: 50%;
-  background: #ffdd9e;
+  background: var(--maincolor);
 }
 
 #toggle:checked ~ .toggleSwitch {
-  background: #ffdd9e;
+  background: var(--maincolor);
 }
 
 #toggle:checked ~ .toggleSwitch .toggleButton {

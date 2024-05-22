@@ -88,7 +88,7 @@ getUserInfo()
   font-size: small;
 }
 .select {
-  color: #ffa967;
+  color: var(--maincolor);
   font-weight: bold;
 }
 .list {

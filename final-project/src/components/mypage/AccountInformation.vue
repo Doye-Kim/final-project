@@ -41,7 +41,7 @@ const changeNavItem = (value) => {
   cursor: pointer;
 }
 .select {
-  color: #ffa967;
+  color: var(--maincolor);
   font-weight: bold;
 }
 .myDetail {

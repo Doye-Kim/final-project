@@ -28,19 +28,14 @@ const stripTags = (str) => {
       >
         <b class="title">{{ board.postTitle }}</b>
         <p class="contents">{{ stripTags(board.postContent) }}</p>
-        <div class="info">
-          <!-- {{ authStore.userInfo.userName }} -->
-          | {{ convertDateToString(board.postTime) }} 전<br />
-        </div>
+        <div class="info">{{ convertDateToString(board.postTime) }} 전<br /></div>
 
-        <div class="info infobottom">
-          <div><img class="infoIcon" src="@/assets/img/comment.png" /></div>
-          <!-- <div>{{ board.comments.length }}</div> -->
+        <!-- <div class="info infobottom">
           <div><img class="infoIcon" src="@/assets/img/like.png" /></div>
           <div>{{ board.likeCount }}</div>
           <div><img class="infoIcon" src="@/assets/img/views.png" /></div>
           <div>{{ board.viewCount }}</div>
-        </div>
+        </div> -->
       </RouterLink>
     </div>
   </div>
@@ -52,12 +47,12 @@ const stripTags = (str) => {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 320px;
+  max-width: 400px;
   margin-bottom: 30px;
 }
 .post {
   width: 100%;
-  height: 100px;
+  height: 70px;
   position: relative;
   border-radius: 20px;
   border: 1px solid #dadada;
@@ -95,7 +90,7 @@ a {
 p,
 b {
   display: block;
-  width: 200px;
+  width: 300px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

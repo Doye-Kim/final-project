@@ -3,9 +3,7 @@ import { RouterLink } from 'vue-router'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 import LoginModal from '@/components/modals/LoginModal.vue'
-import { ref } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
-const { userInfo } = useAuthStore()
 
 import { useModalStore } from '@/stores/modalStore'
 const { authStore, logout } = useAuthStore()
@@ -21,21 +19,15 @@ const openLoginModal = () => {
   console.log('open')
   modalStore.loginIsOpen = true
 }
-const clickMenu = ref(false)
-const toggleDropdown = () => (clickMenu.value = !clickMenu.value)
-// const closeDropdown = () => {
-//   console.log('close')
-//   clickMenu.value = false
-// }
-console.log(userInfo)
 </script>
 
 <template>
   <nav class="navbar">
-    <div @click="toggleDropdown">
-      <img src="@/assets/img/menu.png" class="navBtn" />
-    </div>
     <RouterLink to="/"><img src="@/assets/img/logo2.png" width="80" /></RouterLink>
+    <div>
+      <RouterLink to="/tour" class="orbit nav">map</RouterLink>
+      <RouterLink to="/board" class="orbit nav">community</RouterLink>
+    </div>
     <div class="expandItem" />
 
     <div id="logoutArea" v-show="authStore.isLogin">
@@ -48,17 +40,17 @@ console.log(userInfo)
       <button type="button" class="orbit" @click="openLoginModal">로그인</button>
     </div>
   </nav>
-  <ul class="navbar-menu" v-show="clickMenu">
-    <li>
-      <RouterLink to="/tour" class="orbit" @click="toggleDropdown">지도</RouterLink>
-    </li>
-    <li><RouterLink to="/board" class="orbit" @click="toggleDropdown">커뮤니티</RouterLink></li>
-  </ul>
   <div v-if="modalStore.loginIsOpen">
     <LoginModal />
   </div>
 </template>
 <style scoped>
+.nav {
+  margin: 0 10px 0 20px;
+}
+.nav:hover {
+  color: gray;
+}
 button {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -122,5 +114,8 @@ button {
 a {
   text-decoration: none;
   color: black;
+}
+#logoutArea {
+  display: flex;
 }
 </style>
