@@ -6,12 +6,14 @@ export const usePlanStore = defineStore('planStore', () => {
   const planState = reactive({
     list: []
   })
+  // todo planDate
   const userSeq = sessionStorage.getItem('userSeq')
-  const insertPlan = async (planDate, contentId) => {
+  const insertPlan = async (planDate, contentId, title) => {
     let params = {
       userSeq: userSeq,
       contentId: contentId,
-      planDate: '2024-05-20'
+      planDate: planDate,
+      title: title
     }
     let { data } = axios.post('/plans', params)
     console.log(data)
@@ -23,9 +25,10 @@ export const usePlanStore = defineStore('planStore', () => {
     let { data } = axios.delete('/plans', { params: params })
     console.log(data)
   }
-  const getPlan = async (year, month) => {
-    let { data } = await axios.get(`/plans/${userSeq}/${year}/${month}`)
+  const getPlan = async () => {
+    let { data } = await axios.get(`/plans/${userSeq}`)
     planState.list = data
+    console.log(data)
   }
   return { planState, insertPlan, deletePlan, getPlan }
 })

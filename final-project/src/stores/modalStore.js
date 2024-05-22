@@ -7,11 +7,17 @@ export const useModalStore = defineStore('modalStore', () => {
   const AddFriendIsOpen = ref(false)
   const FriendInfoIsOpen = ref(false)
   const AttractionIsOpen = ref(false)
+  const FriendBookmarkIsOpen = ref(false)
+  const SearchInputIsOpen = ref(false)
+  const SearchResultIsOpen = ref(false)
   return {
     loginIsOpen,
     PasswordIsOpen,
     AddFriendIsOpen,
     FriendInfoIsOpen,
-    AttractionIsOpen
+    AttractionIsOpen,
+    FriendBookmarkIsOpen,
+    SearchInputIsOpen,
+    SearchResultIsOpen
   }
 })

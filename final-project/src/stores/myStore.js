@@ -1,8 +1,11 @@
 import { reactive } from 'vue'
 import { defineStore } from 'pinia'
 import axios from '@/common/axios-config'
-
+import { useAttractionStore } from '@/stores/attractionStore'
+import { useBookmarkStore } from '@/stores/bookmarkStore'
 export const useMyStore = defineStore('myStore', () => {
+  const { getAttraction } = useAttractionStore()
+  const bookmarkStore = useBookmarkStore()
   const myState = reactive({
     myBookmark: [],
     myPlan: [],
@@ -15,10 +18,9 @@ export const useMyStore = defineStore('myStore', () => {
   })
 
   const userSeq = sessionStorage.getItem('userSeq')
-  const getBookmarks = async () => {
-    let { data } = await axios.get(`/bookmarks/${userSeq}`)
+  const getBookmarks = async (seq) => {
+    let { data } = await axios.get(`/bookmarks/${seq}`)
     myState.myBookmark = data
-    console.log(myState.myBookmark)
   }
 
   const getPlans = async () => {

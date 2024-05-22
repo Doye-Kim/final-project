@@ -1,8 +1,10 @@
 import { ref, reactive } from 'vue'
 import { defineStore } from 'pinia'
+import { useMyStore } from '@/stores/myStore'
 import axios from '@/common/axios-config'
 
 export const useAttractionStore = defineStore('attractionStore', () => {
+  const { myState } = useMyStore()
   const attractionState = reactive({
     list: [],
     attraction: {},
@@ -10,7 +12,7 @@ export const useAttractionStore = defineStore('attractionStore', () => {
     gugunCode: 0
   })
   const getAttraction = async (contentId) => {
-    let { data } = await axios.get(`/place/${contentId}`)
+    let { data } = await axios.get(`/attraction/place/${contentId}`)
     return data
   }
   const attractions = ref([])
@@ -30,5 +32,13 @@ export const useAttractionStore = defineStore('attractionStore', () => {
     }
     console.log(attractions)
   }
-  return { attractionState, getMarkers, attractions, getAttraction }
+  const getBookmarkMarkers = async () => {
+    attractions.value = []
+    myState.myBookmark.forEach((item) => {
+      item.contentTypeId = 40
+      attractions.value.push(item)
+    })
+    console.log(attractions)
+  }
+  return { attractionState, getMarkers, attractions, getAttraction, getBookmarkMarkers }
 })

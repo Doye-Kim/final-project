@@ -12,10 +12,10 @@ const isSelected = ref(1)
 const changeValue = (value) => {
   isSelected.value = value
 }
-
+const userSeq = sessionStorage.getItem('userSeq')
 const bookmarkClick = async () => {
   changeValue(1)
-  await getBookmarks()
+  await getBookmarks(userSeq)
 }
 const planClick = async () => {
   changeValue(2)

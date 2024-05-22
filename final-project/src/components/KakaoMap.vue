@@ -4,11 +4,13 @@
       <AttractionModal v-if="modalStore.AttractionIsOpen" />
       <img id="bookmarkBtn" @click="bookmarkBtnClick" src="@/assets/img/star_empty.png" />
       <img id="searchBtn" @click="searchBtnClick" src="@/assets/img/searchBtn.png" />
+      <FriendBookmarkModal v-if="modalStore.FriendBookmarkIsOpen" />
     </div>
   </div>
 </template>
 
 <script setup>
+import FriendBookmarkModal from '@/components/modals/FriendBookmarkModal.vue'
 import AttractionModal from '@/components/modals/AttractionModal.vue'
 import { ref, onMounted, watch, toRefs } from 'vue'
 import { useAttractionStore } from '@/stores/attractionStore'
@@ -16,7 +18,8 @@ const { attractions } = toRefs(useAttractionStore())
 const { attractionState } = useAttractionStore()
 import { useModalStore } from '@/stores/modalStore'
 const modalStore = useModalStore()
-
+import { useMyStore } from '@/stores/myStore'
+const { myState } = useMyStore()
 let markers = ref([])
 // let onMarkerContents = ref([])
 
@@ -28,7 +31,7 @@ onMounted(() => {
     watch(
       attractions,
       (newAtt, oldAtt) => {
-        console.log('watch')
+        console.log('watch', newAtt)
         // if (attractionState.list.length > 0 && newAtt.length == 0)
         //   alert(' ̗̀(ꙨꙨ)ː̖́\n해당 지역엔 선택하신 컨텐츠의 관광지가 없습니다')
         deleteAll()
@@ -47,6 +50,14 @@ onMounted(() => {
   }
 })
 
+const bookmarkBtnClick = () => {
+  modalStore.FriendBookmarkIsOpen = !modalStore.FriendBookmarkIsOpen
+}
+
+const searchBtnClick = () => {
+  modalStore.SearchInputIsOpen = !modalStore.SearchInputIsOpen
+}
+
 const initMap = () => {
   var container = document.getElementById('map')
   var options = {
@@ -55,6 +66,7 @@ const initMap = () => {
   }
   return new kakao.maps.Map(container, options)
 }
+
 const deleteAll = () => {
   console.log('delete', markers)
   markers.value.forEach((marker) => {
@@ -64,7 +76,10 @@ const deleteAll = () => {
   markers.value = []
   console.log(markers)
 }
+
+let now = null
 function displayMarker(attractions, map) {
+  console.log('display', attractions)
   const imgSize = new kakao.maps.Size(25, 25)
   let newLatLng = new kakao.maps.LatLng(attractions[0].mapy, attractions[0].mapx)
 
@@ -78,12 +93,13 @@ function displayMarker(attractions, map) {
     })
 
     kakao.maps.event.addListener(marker, 'click', function () {
-      console.log('click', marker.getPosition())
-
+      if (now == null) {
+        modalStore.AttractionIsOpen = true
+      } else if (attractionState.attraction !== item) {
+        map.setCenter(marker.getPosition())
+      } else modalStore.AttractionIsOpen = !modalStore.AttractionIsOpen
       attractionState.attraction = item
-      modalStore.AttractionIsOpen = !modalStore.AttractionIsOpen
-      console.log(attractionState.attraction)
-      map.setCenter(marker.getPosition())
+      now = item
     })
 
     marker.setMap(map)
@@ -106,6 +122,7 @@ function displayMarker(attractions, map) {
 #bookmarkBtn {
   position: absolute;
   z-index: 199;
+  cursor: pointer;
   right: 5px;
   top: 5px;
   width: 30px;
@@ -114,6 +131,7 @@ function displayMarker(attractions, map) {
   position: absolute;
   z-index: 199;
   left: 5px;
+  cursor: pointer;
   top: 5px;
   width: 30px;
 }

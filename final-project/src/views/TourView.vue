@@ -176,7 +176,7 @@ fieldset {
 }
 .dropdown-menu {
   position: absolute;
-  z-index: 100;
+  z-index: 200;
   width: 200px;
   padding: 0;
   background-color: white;

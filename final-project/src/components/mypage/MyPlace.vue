@@ -4,7 +4,8 @@ import { useMyStore } from '@/stores/myStore'
 const { getBookmarks, myState } = useMyStore()
 
 onMounted(async () => {
-  await getBookmarks()
+  let seq = sessionStorage.getItem('userSeq')
+  await getBookmarks(seq)
 })
 </script>
 <template>
