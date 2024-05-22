@@ -5,7 +5,7 @@ import { useAttractionStore } from '@/stores/attractionStore'
 
 const { getBookmarkMarkers } = useAttractionStore()
 const { friendState, getList } = useFriendStore()
-const { getBookmarks, myState } = useMyStore()
+const { getBookmarks } = useMyStore()
 getList()
 let userSeq = sessionStorage.getItem('userSeq')
 let userNickname = sessionStorage.getItem('userNickname')
