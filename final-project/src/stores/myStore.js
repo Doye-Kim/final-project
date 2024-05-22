@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from '@/common/axios-config'
 
@@ -20,9 +20,29 @@ export const useMyStore = defineStore('myStore', () => {
     myState.myBookmark = data
   }
 
+  const planInfo = ref([])
   const getPlans = async () => {
-    let { data } = await axios.get(`/plans/${userSeq}`)
-    myState.myPlan = data
+    try {
+      let { data } = await axios.get(`/plans/${userSeq}`)
+      planInfo.value = data
+      console.log(data)
+      planInfo.value.forEach(async (item) => {
+        let { data } = await axios.get(`/attraction/place/${item.contentId}`)
+        console.log(data)
+        let obj = {
+          planSeq: item.planSeq,
+          planDate: item.planDate,
+          title: item.title,
+          contentId: item.contentId,
+          addr1: data.addr1,
+          firstImage: data.firstImage
+        }
+        myState.myPlan.push(obj)
+      })
+      console.log(myState.myPlan)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const getPost = async () => {

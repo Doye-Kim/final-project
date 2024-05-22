@@ -1,11 +1,14 @@
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from '@/common/axios-config'
+import { useMyStore } from '@/stores/myStore'
 
 export const usePlanStore = defineStore('planStore', () => {
+  const { getPlans, myState } = useMyStore()
   const planState = reactive({
     list: []
   })
+  const plans = ref([])
   // todo planDate
   const userSeq = sessionStorage.getItem('userSeq')
   const insertPlan = async (planDate, contentId, title) => {
@@ -19,10 +22,8 @@ export const usePlanStore = defineStore('planStore', () => {
     console.log(data)
   }
   const deletePlan = async (planSeq) => {
-    let params = {
-      planSeq: planSeq
-    }
-    let { data } = axios.delete('/plans', { params: params })
+    console.log('delete')
+    let { data } = await axios.delete(`/plans/${planSeq}`)
     console.log(data)
   }
   const getPlan = async () => {
@@ -30,5 +31,5 @@ export const usePlanStore = defineStore('planStore', () => {
     planState.list = data
     console.log(data)
   }
-  return { planState, insertPlan, deletePlan, getPlan }
+  return { plans, planState, insertPlan, deletePlan, getPlan }
 })

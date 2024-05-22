@@ -15,11 +15,9 @@ const changeValue = (value) => {
 const userSeq = sessionStorage.getItem('userSeq')
 const bookmarkClick = async () => {
   changeValue(1)
-  await getBookmarks(userSeq)
 }
 const planClick = async () => {
   changeValue(2)
-  await getPlans()
 }
 const postClick = async () => {
   changeValue(3)
