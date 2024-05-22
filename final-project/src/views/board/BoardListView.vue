@@ -38,7 +38,7 @@ const stripTags = (str) => {
         <b class="title">{{ board.postTitle }}</b>
         <p class="contents">{{ stripTags(board.postContent) }}</p>
         <div class="info">
-          {{ boardState.nicknameList[index] || 'Loading...' }}
+          {{ boardState.nicknameList[index] || '(알 수 없음)' }}
           | {{ convertDateToString(board.postTime) }} 전<br />
         </div>
 
