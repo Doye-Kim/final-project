@@ -99,7 +99,7 @@ const getPhoneMask = (data) => {
 </template>
 <style scoped>
 input:focus {
-  outline: 1px solid #ffa967;
+  outline: 1px solid var(--maincolor);
   border: none;
 }
 .container {
@@ -137,11 +137,11 @@ input:focus {
   transform: translateY(-50%);
 
   border-radius: 50%;
-  background: #ffdd9e;
+  background: var(--maincolor);
 }
 
 #toggle:checked ~ .toggleSwitch {
-  background: #ffdd9e;
+  background: var(--maincolor);
 }
 
 #toggle:checked ~ .toggleSwitch .toggleButton {
@@ -196,7 +196,7 @@ input:focus {
   font-size: small;
   border-radius: 20px;
   border-width: 0;
-  background-color: #ffe6ca;
+  background-color: var(--maincolor);
 }
 
 .text-end {

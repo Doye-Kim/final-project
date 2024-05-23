@@ -108,10 +108,10 @@ const close = () => {
   width: 80%;
   margin: 0 auto;
 }
-input:focus {
+/* input:focus {
   outline: 1px solid var(--maincolor);
   border: none;
-}
+} */
 /* todo: 크기 반응형으로 변경 */
 .formInput {
   width: 100%;
@@ -125,7 +125,7 @@ input:focus {
   box-shadow: none;
   border-width: 0;
   font-size: small;
-  background-color: rgba(217, 217, 217, 50);
+  background-color: #dadada;
 }
 .loginBtn {
   display: flex;

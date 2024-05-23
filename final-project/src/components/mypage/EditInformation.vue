@@ -44,10 +44,10 @@ const updateUser = () => {
 </template>
 
 <style scoped>
-input:focus {
+/* input:focus {
   outline: 1px solid #ffa967;
   border: none;
-}
+} */
 .box {
   width: 50%;
   height: auto;

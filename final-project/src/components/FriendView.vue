@@ -18,8 +18,8 @@ const click = () => {
 </template>
 <style scoped>
 .btn-background {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   text-align: center;
   position: fixed;
   bottom: 20px;
@@ -32,6 +32,8 @@ const click = () => {
 }
 .friend-icon {
   position: relative;
-  top: 7px;
+  top: 4px;
+  left: 1px;
+  width: 30px;
 }
 </style>

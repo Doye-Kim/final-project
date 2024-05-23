@@ -42,27 +42,27 @@ const stripTags = (str) => {
           | {{ convertDateToString(board.postTime) }} 전<br />
         </div>
 
-        <div class="info infobottom">
+        <div class="info info-bottom">
           <!-- <div><img class="infoIcon" src="@/assets/img/comment.png" /></div> -->
           <!-- <div>{{ board.comments }}</div> -->
-          <div><img class="infoIcon" src="@/assets/img/like.png" /></div>
+          <img class="likeIcon" src="@/assets/img/like.png" />
           <div>{{ board.likeCount }}</div>
-          <div><img class="infoIcon" src="@/assets/img/views.png" /></div>
+          <img class="viewIcon" src="@/assets/img/views.png" />
           <div>{{ board.viewCount }}</div>
         </div>
       </RouterLink>
     </div>
-    <div>
+    <!-- <div>
       <input type="text" />
       <button>검색</button>
-    </div>
+    </div> -->
   </div>
 </template>
 <style scoped>
-input:focus {
+/* input:focus {
   outline: 1px solid #ffa967;
   border: none;
-}
+} */
 #container {
   display: flex;
   flex-direction: column;
@@ -91,7 +91,8 @@ input:focus {
 }
 .contents {
   margin: 10px;
-  top: 20px;
+  top: 25px;
+  font-size: small;
   color: grey;
 }
 .info {
@@ -99,14 +100,20 @@ input:focus {
   font-size: small;
   right: 0;
   top: 10px;
+  align-items: center;
 }
-.infoIcon {
-  width: 10px;
-  height: 10px;
+.likeIcon {
+  width: 17px;
+  height: 17px;
   margin: 5px;
 }
-.infobottom {
-  top: 60px;
+.viewIcon {
+  width: 10px;
+  height: 7px;
+  margin: 5px;
+}
+.info-bottom {
+  top: 70px;
 }
 .writeBtnArea {
   width: 100%;
@@ -114,12 +121,38 @@ input:focus {
 }
 .writeBtnArea button {
   float: right;
+  width: 60px;
+  padding: 7px;
+  cursor: pointer;
+  margin-top: 7px;
+  font-size: small;
+  border-radius: 20px;
+  border-width: 0;
+  background-color: var(--maincolor);
+
+  transition-property: all;
+  transition-duration: 0.1s;
+  transition-delay: 0s;
+  transition-timing-function: ease-in;
+}
+
+.writeBtnArea button:hover {
+  background-color: white;
+  box-shadow: 0 0 0 1.5px var(--maincolor) inset;
 }
 a {
   text-decoration: none;
   color: black;
 }
-p,
+p {
+  display: -webkit-box;
+  width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
 b {
   display: block;
   width: 200px;

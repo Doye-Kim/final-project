@@ -24,7 +24,7 @@ const openLoginModal = () => {
 <template>
   <nav class="navbar">
     <RouterLink to="/"><img src="@/assets/img/logo2.png" width="80" /></RouterLink>
-    <div>
+    <div class="nav-router">
       <RouterLink to="/tour" class="orbit nav">map</RouterLink>
       <RouterLink to="/board" class="orbit nav">community</RouterLink>
     </div>
@@ -67,6 +67,9 @@ button {
 .expandItem {
   flex: 1 0 auto;
   height: 10px;
+}
+.nav-router {
+  margin-left: 20px;
 }
 .navBtn {
   width: 30px;

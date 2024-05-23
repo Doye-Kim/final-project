@@ -111,10 +111,10 @@ const onSave = (v, h) => {
   border: 1px solid rgb(192, 192, 192);
   font-size: small;
 }
-input:focus {
+/* input:focus {
   outline: 1px solid #ffa967;
   border: none;
-}
+} */
 .previewArea {
   margin-top: 20px;
 }
