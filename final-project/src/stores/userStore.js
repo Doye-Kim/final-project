@@ -18,7 +18,6 @@ export const useUserStore = defineStore('userStore', () => {
   })
   const getUserNickname = async (userSeq) => {
     let { data } = await axios.get(`/users/${userSeq}`)
-    console.log(data.userNickname)
     return data.userNickname
   }
   const getUserInfo = async () => {

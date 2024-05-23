@@ -1,14 +1,25 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useBoardStore } from '@/stores/boardStore'
 import convertDateToString from '@/utils/convert_date_to_string'
 const { boardState } = useBoardStore()
 const boardStore = useBoardStore()
 
+const totalCount = ref(0)
+const currentPage = ref(1)
+const totalPages = ref(0)
+const itemsPerPage = 10
+
+const calculateTotalPages = () => {
+  totalPages.value = Math.ceil(totalCount.value / itemsPerPage)
+}
 onMounted(async () => {
-  await boardStore.listBoard()
+  totalCount.value = await boardStore.getTotalCount()
+  await boardStore.listBoard(0)
+  calculateTotalPages()
 })
+
 const postClick = (board) => {
   boardState.board = board
   console.log(boardState.board)
@@ -19,6 +30,12 @@ const stripTags = (str) => {
   str = str.replace(/\s\s+/g, ' ') // 연달아 있는 줄바꿈, 공백, 탭을 공백 1개로 줄임
   return str
 }
+
+const movePage = async (pageIndex) => {
+  currentPage.value = pageIndex
+  const offset = (pageIndex - 1) * itemsPerPage
+  await boardStore.listBoard(offset)
+}
 </script>
 
 <template>
@@ -26,7 +43,6 @@ const stripTags = (str) => {
     <RouterLink to="/boardWrite" class="writeBtnArea">
       <button>글쓰기</button>
     </RouterLink>
-    <!-- todo: 글자수 넘어가면 말줄임표-->
     <div class="postList">
       <RouterLink
         v-for="(board, index) in boardState.boardList"
@@ -43,8 +59,6 @@ const stripTags = (str) => {
         </div>
 
         <div class="info info-bottom">
-          <!-- <div><img class="infoIcon" src="@/assets/img/comment.png" /></div> -->
-          <!-- <div>{{ board.comments }}</div> -->
           <img class="likeIcon" src="@/assets/img/like.png" />
           <div>{{ board.likeCount }}</div>
           <img class="viewIcon" src="@/assets/img/views.png" />
@@ -52,17 +66,27 @@ const stripTags = (str) => {
         </div>
       </RouterLink>
     </div>
-    <!-- <div>
-      <input type="text" />
-      <button>검색</button>
-    </div> -->
+    <div class="pagination">
+      <button @click="movePage(1)" :disabled="currentPage.value === 1">처음</button>
+      <button @click="movePage(currentPage.value - 1)" :disabled="currentPage.value === 1">
+        이전
+      </button>
+      <button
+        v-for="page in totalPages.value"
+        :key="page"
+        @click="movePage(page)"
+        :class="{ active: page === currentPage.value }"
+      >
+        {{ page }}
+      </button>
+      <button @click="movePage(currentPage + 1)" :disabled="currentPage === totalPages">
+        다음
+      </button>
+      <button @click="movePage(totalPages)" :disabled="currentPage === totalPages">끝</button>
+    </div>
   </div>
 </template>
 <style scoped>
-/* input:focus {
-  outline: 1px solid #ffa967;
-  border: none;
-} */
 #container {
   display: flex;
   flex-direction: column;
@@ -159,5 +183,22 @@ b {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+}
+.pagination button.active {
+  font-weight: bold;
+  background-color: #ddd;
+}
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 </style>

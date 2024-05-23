@@ -11,6 +11,7 @@ export const useBoardStore = defineStore(
     const { getUserNickname } = useUserStore()
     const boardState = reactive({
       boardList: [],
+      totalCount: 0,
       nicknameList: [],
       board: {
         postSeq: 0,
@@ -62,10 +63,11 @@ export const useBoardStore = defineStore(
       console.log('!!!!!!!', boardState.board.postSeq, userSeq, data)
       return data
     }
-    const listBoard = async () => {
+
+    const listBoard = async (offset) => {
       //boardState.boardList = boardListData
       try {
-        let response = await axios.get('/posts')
+        let response = await axios.get(`/posts/${offset}/list`)
         //console.log(response)
         // let data = await response.json()
         // console.log(data)
@@ -185,6 +187,11 @@ export const useBoardStore = defineStore(
       }
     }
 
+    const getTotalCount = async () => {
+      let { data } = await axios.get('/posts/total-cnt')
+      boardState.totalCount = data
+    }
+
     return {
       boardState,
       commentState,
@@ -199,7 +206,8 @@ export const useBoardStore = defineStore(
       viewPost,
       likePost,
       isLikePost,
-      nowPostSeq
+      nowPostSeq,
+      getTotalCount
     }
   },
   {
