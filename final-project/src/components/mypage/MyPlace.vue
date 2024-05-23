@@ -9,7 +9,7 @@ onMounted(async () => {
 })
 </script>
 <template>
-  <div>
+  <div class="place-container">
     <div class="card-container">
       <div class="card" v-for="(item, index) in myState.myBookmark" :key="index">
         <img class="card-img" :src="item.firstImage" />
@@ -26,6 +26,15 @@ onMounted(async () => {
 </template>
 
 <style>
+.place-container {
+  height: 85vh;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
+}
+.place-container::-webkit-scrollbar {
+  display: none;
+}
 .card-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* 두 개의 열을 가진 그리드로 설정 */

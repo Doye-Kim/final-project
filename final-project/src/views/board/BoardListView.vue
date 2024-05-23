@@ -3,17 +3,20 @@ import { onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useBoardStore } from '@/stores/boardStore'
 import convertDateToString from '@/utils/convert_date_to_string'
-const { boardState } = useBoardStore()
+
 const boardStore = useBoardStore()
+const { boardState } = boardStore
 
 const totalCount = ref(0)
-const currentPage = ref(1)
-const totalPages = ref(0)
+const currentPage = ref('')
+const totalPages = ref('')
 const itemsPerPage = 10
 
 const calculateTotalPages = () => {
   totalPages.value = Math.ceil(totalCount.value / itemsPerPage)
+  console.log(totalPages.value)
 }
+
 onMounted(async () => {
   totalCount.value = await boardStore.getTotalCount()
   await boardStore.listBoard(0)
@@ -25,6 +28,7 @@ const postClick = (board) => {
   console.log(boardState.board)
   console.log(board)
 }
+
 const stripTags = (str) => {
   str = str.replace(/(<([^>]+)>)/gi, '') // 태그 제거
   str = str.replace(/\s\s+/g, ' ') // 연달아 있는 줄바꿈, 공백, 탭을 공백 1개로 줄임
@@ -32,6 +36,7 @@ const stripTags = (str) => {
 }
 
 const movePage = async (pageIndex) => {
+  if (pageIndex < 1 || pageIndex > totalPages.value) return
   currentPage.value = pageIndex
   const offset = (pageIndex - 1) * itemsPerPage
   await boardStore.listBoard(offset)
@@ -79,13 +84,22 @@ const movePage = async (pageIndex) => {
       >
         {{ page }}
       </button>
-      <button @click="movePage(currentPage + 1)" :disabled="currentPage === totalPages">
+      <button
+        @click="movePage(currentPage.value + 1)"
+        :disabled="currentPage.value === totalPages.value"
+      >
         다음
       </button>
-      <button @click="movePage(totalPages)" :disabled="currentPage === totalPages">끝</button>
+      <button
+        @click="movePage(totalPages.value)"
+        :disabled="currentPage.value === totalPages.value"
+      >
+        끝
+      </button>
     </div>
   </div>
 </template>
+
 <style scoped>
 #container {
   display: flex;
@@ -192,13 +206,20 @@ b {
 .pagination button {
   margin: 0 5px;
   padding: 5px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--maincolor);
+  background-color: white;
 }
-.pagination button.active {
+.pagination button:hover {
   font-weight: bold;
-  background-color: #ddd;
+  cursor: pointer;
+  background-color: var(--maincolor);
 }
 .pagination button:disabled {
   cursor: not-allowed;
   opacity: 0.5;
+}
+.pagination .active {
+  font-weight: bold;
 }
 </style>

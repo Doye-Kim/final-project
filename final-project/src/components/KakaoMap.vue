@@ -143,7 +143,7 @@ function displayMarker(attractions, map) {
 <style scoped>
 #container {
   width: 85%;
-  height: 70vh;
+  height: 80vh;
 }
 #map {
   width: 100%;
