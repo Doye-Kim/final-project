@@ -7,17 +7,21 @@ const modalStore = useModalStore()
 const close = () => {
   modalStore.FriendInfoIsOpen = false
 }
+const addFriendClick = () => {
+  addFriend()
+  modalStore.FriendInfoIsOpen = false
+}
 </script>
 <template>
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content orbit">
       <div class="modal-header">
         <img src="@/assets/img/close-btn.png" class="closeBtn" @click="close" />
       </div>
       <div class="modal-body">
         <img src="@/assets/img/userCircle.png" width="70px" />
         <div>{{ friendState.friend.userNickname }}</div>
-        <button @click="addFriend">추가</button>
+        <div id="btnDiv"><button @click="addFriendClick" class="addBtn">추가</button></div>
       </div>
     </div>
   </div>
@@ -54,47 +58,34 @@ const close = () => {
   top: 5%;
   cursor: pointer;
 }
-.logo {
-  text-align: center;
-}
-.logo img {
-  width: 25%;
-}
-.inputArea {
-  width: 80%;
-  margin: 0 auto;
-}
-input:focus {
-  outline: 1px solid #ffa967;
-  border: none;
-}
-/* todo: 크기 반응형으로 변경 */
-.formInput {
+
+#btnDiv {
+  margin-top: 20px;
   width: 100%;
-  aspect-ratio: 13/1;
-  margin-top: 10px;
-  border-radius: 20px;
-  text-indent: 5%;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  box-shadow: none;
-  border-width: 0;
-  font-size: small;
-  background-color: rgba(217, 217, 217, 50);
-}
-.loginBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+}
+
+.addBtn {
+  width: 60px;
+  padding: 7px;
   cursor: pointer;
-  aspect-ratio: 13/1;
-  margin-top: 10px;
+  margin-top: 7px;
   font-size: small;
   border-radius: 20px;
   border-width: 0;
+  box-shadow: 2px 2px 0 #c7c7c7;
   background-color: var(--maincolor);
+
+  transition-property: all;
+  transition-duration: 0.1s;
+  transition-delay: 0s;
+  transition-timing-function: ease-in;
+}
+.addBtn:hover {
+  box-shadow: none;
+  transform: translate(2px, 2px);
 }
 /* input {
   -webkit-appearance: none;

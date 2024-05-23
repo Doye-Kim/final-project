@@ -15,6 +15,7 @@ export const useAttractionStore = defineStore('attractionStore', () => {
     let { data } = await axios.get(`/attraction/place/${contentId}`)
     return data
   }
+  const nowContentId = ref(0)
   const attractions = ref([])
   const getMarkers = async () => {
     attractions.value = []
@@ -68,6 +69,7 @@ export const useAttractionStore = defineStore('attractionStore', () => {
     attractions,
     getAttraction,
     getBookmarkMarkers,
-    getAttrPlans
+    getAttrPlans,
+    nowContentId
   }
 })

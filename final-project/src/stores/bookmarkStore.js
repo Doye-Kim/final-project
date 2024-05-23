@@ -18,7 +18,6 @@ export const useBookmarkStore = defineStore('bookmarkStore', () => {
       }
       let { data } = await axios.post('/bookmarks', params)
       console.log(data)
-      // Attraction 데이터를 처리하는 로직 추가
     } catch (error) {
       console.error('Failed to fetch and process attraction data:', error)
     }
@@ -34,5 +33,10 @@ export const useBookmarkStore = defineStore('bookmarkStore', () => {
     let { data } = await axios.get(`/bookmarks/${seq}`)
     myState.myBookmark = data
   }
-  return { bookmarkState, insertBookmark, deleteBookmark, getBookmarks }
+
+  const isBookmark = async (contentId) => {
+    let { data } = await axios.get(`/bookmarks/${userSeq}/${contentId}`)
+    return data
+  }
+  return { bookmarkState, isBookmark, insertBookmark, deleteBookmark, getBookmarks }
 })

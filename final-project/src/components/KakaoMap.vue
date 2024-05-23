@@ -2,7 +2,18 @@
   <div id="container">
     <div id="map">
       <AttractionModal v-if="modalStore.AttractionIsOpen" />
-      <img id="bookmarkBtn" @click="bookmarkBtnClick" src="@/assets/img/star_empty.png" />
+      <img
+        v-show="!modalStore.FriendBookmarkIsOpen"
+        id="bookmarkBtn"
+        @click="bookmarkBtnClick"
+        src="@/assets/img/star_empty.png"
+      />
+      <img
+        v-show="modalStore.FriendBookmarkIsOpen"
+        id="bookmarkBtn"
+        @click="bookmarkBtnClick"
+        src="@/assets/img/star.png"
+      />
       <img id="searchBtn" @click="searchBtnClick" src="@/assets/img/searchBtn.png" />
       <div v-if="modalStore.SearchInputIsOpen" class="inputDiv">
         <input
@@ -23,7 +34,7 @@ import FriendBookmarkModal from '@/components/modals/FriendBookmarkModal.vue'
 import AttractionModal from '@/components/modals/AttractionModal.vue'
 import { ref, onMounted, watch, toRefs } from 'vue'
 import { useAttractionStore } from '@/stores/attractionStore'
-const { attractions } = toRefs(useAttractionStore())
+const { attractions, nowContentId } = toRefs(useAttractionStore())
 const { attractionState, searchAttraction } = useAttractionStore()
 import { useModalStore } from '@/stores/modalStore'
 const modalStore = useModalStore()
@@ -112,10 +123,12 @@ function displayMarker(attractions, map) {
     kakao.maps.event.addListener(marker, 'click', function () {
       if (now == null) {
         modalStore.AttractionIsOpen = true
+        map.setCenter(marker.getPosition())
       } else if (attractionState.attraction !== item) {
         map.setCenter(marker.getPosition())
       } else modalStore.AttractionIsOpen = !modalStore.AttractionIsOpen
       attractionState.attraction = item
+      nowContentId.value = item.contentId
       now = item
     })
 
@@ -139,6 +152,8 @@ function displayMarker(attractions, map) {
 #bookmarkBtn {
   position: absolute;
   z-index: 199;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
   right: 5px;
   top: 5px;
@@ -166,6 +181,7 @@ function displayMarker(attractions, map) {
   background-position: 5px center;
   padding-left: 35px;
   height: 25px;
+  outline: none;
 }
 .inputDiv {
   position: relative;

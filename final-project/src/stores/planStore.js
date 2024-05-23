@@ -18,8 +18,13 @@ export const usePlanStore = defineStore('planStore', () => {
       planDate: planDate,
       title: title
     }
-    let { data } = axios.post('/plans', params)
-    console.log(data)
+    try {
+      axios.post('/plans', params).then(() => {
+        alert('내 플랜에 등록되었습니다')
+      })
+    } catch (err) {
+      console.log(err)
+    }
   }
   const deletePlan = async (planSeq) => {
     console.log('delete')

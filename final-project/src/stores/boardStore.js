@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import axios from '@/common/axios-config'
 import { defineStore } from 'pinia'
 import { useUserStore } from '@/stores/userStore'
@@ -27,6 +27,7 @@ export const useBoardStore = defineStore(
       commentNnList: [],
       isSameComment: []
     })
+    const nowPostSeq = ref(0)
 
     const commentState = reactive({
       commentList: [],
@@ -55,6 +56,12 @@ export const useBoardStore = defineStore(
       let { data } = await axios.post(`/posts/${boardState.board.postSeq}/like`, likeObj)
       return data
     }
+
+    const isLikePost = async (userSeq) => {
+      let { data } = await axios.get(`/posts/${boardState.board.postSeq}/${userSeq}/like`)
+      console.log('!!!!!!!', boardState.board.postSeq, userSeq, data)
+      return data
+    }
     const listBoard = async () => {
       //boardState.boardList = boardListData
       try {
@@ -78,7 +85,7 @@ export const useBoardStore = defineStore(
       // 상세
       console.log(postSeq)
       let url = '/posts/' + postSeq
-
+      nowPostSeq.value = postSeq
       try {
         let { data } = await axios.get(url)
         // let { data } = response;
@@ -190,7 +197,9 @@ export const useBoardStore = defineStore(
       writeComment,
       deleteComment,
       viewPost,
-      likePost
+      likePost,
+      isLikePost,
+      nowPostSeq
     }
   },
   {

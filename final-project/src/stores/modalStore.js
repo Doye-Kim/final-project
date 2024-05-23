@@ -10,6 +10,7 @@ export const useModalStore = defineStore('modalStore', () => {
   const FriendBookmarkIsOpen = ref(false)
   const SearchInputIsOpen = ref(false)
   const SearchResultIsOpen = ref(false)
+  const datepickerIsOpen = ref(false)
   return {
     loginIsOpen,
     PasswordIsOpen,
@@ -18,6 +19,7 @@ export const useModalStore = defineStore('modalStore', () => {
     AttractionIsOpen,
     FriendBookmarkIsOpen,
     SearchInputIsOpen,
-    SearchResultIsOpen
+    SearchResultIsOpen,
+    datepickerIsOpen
   }
 })
